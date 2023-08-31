@@ -30,7 +30,7 @@ func TestCreateProviderSuccess(t *testing.T) {
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
 
-	err := ProviderControllerObj.CreateProvider(actualProvider, user)
+	_, err := ProviderControllerObj.CreateProvider(actualProvider, user)
 	assert.Nil(t, err)
 
 	expectedProvider, err := ProviderControllerObj.GetProvider(user)
@@ -55,7 +55,7 @@ func TestCreateProviderIfExist(t *testing.T) {
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{actualProvider}, []dto.Rates{}, []dto.Charger{})
 
-	err := ProviderControllerObj.CreateProvider(actualProvider, user)
+	_, err := ProviderControllerObj.CreateProvider(actualProvider, user)
 	assert.Equal(t, err, fmt.Errorf("provider already exist"))
 }
 
