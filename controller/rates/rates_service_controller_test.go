@@ -66,3 +66,32 @@ func TestDeleteRatesSuccess(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, len(ratesList), 0)
 }
+
+func TestUpdateRatesSuccess(t *testing.T) {
+	setup()
+	var (
+		provider = dto.Provider{
+			ID:          0,
+			UserEmail:   "example@example.com",
+			CompanyName: "example",
+			Description: "example",
+			Status:      "",
+		}
+		actualRates = dto.Rates{
+			ID:            0,
+			ProviderId:    0,
+			NormalRate:    2,
+			PenaltyRate:   2,
+			NoShowPenalty: 2,
+			Status:        "",
+		}
+	)
+	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{actualRates}, []dto.Charger{})
+	actualRates.NormalRate = 100
+	err := RateControllerObj.UpdateRate(actualRates)
+	assert.Nil(t, err)
+
+	ratesList, err := RateControllerObj.GetRateByProviderId(provider.ID)
+	assert.Nil(t, err)
+	assert.Equal(t, actualRates, ratesList[0])
+}

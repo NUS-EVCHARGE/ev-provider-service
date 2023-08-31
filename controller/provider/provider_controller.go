@@ -33,7 +33,7 @@ func (p ProviderControllerImpl) DeleteProvider(providerId uint) error {
 }
 
 func (p ProviderControllerImpl) UpdateProvider(provider dto.Provider) error {
-	return dao.Db.DeleteProviderEntry(provider)
+	return dao.Db.UpdateProviderEntry(provider)
 }
 
 var (

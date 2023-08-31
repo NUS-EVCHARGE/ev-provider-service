@@ -85,6 +85,7 @@ func (m *mockDbImpl) UpdateRatesEntry(rates dto.Rates) error {
 	if len(m.ratesList) <= int(rates.ID) {
 		return fmt.Errorf("rates not found")
 	}
+	m.ratesList[rates.ID] = rates
 	return nil
 }
 
