@@ -37,7 +37,7 @@ func main() {
 	err = dao.InitDB(configObj.Dsn)
 	if err != nil {
 		logrus.WithField("config", configObj).Error("failed to connect to database")
-		//return
+		return
 	}
 
 	provider.NewProviderController()
