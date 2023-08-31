@@ -20,6 +20,7 @@ import (
 //	@Success		200	{object}	dto.Charger	"returns a Charger object"
 //	@Router			/provider/{provider_id}/charger [post]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
+//	@Param			provider_id				path	int		true	"Provider id"
 func CreateChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger
@@ -68,6 +69,7 @@ func CreateChargerHandler(c *gin.Context) {
 //	@Success		200	{object}	[]dto.Charger	"returns a list of Charger object"
 //	@Router			/provider/{provider_id}/charger [get]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
+//	@Param			provider_id				path	int		true	"Provider id"
 func GetChargerHandler(c *gin.Context) {
 	var (
 		chargerList []dto.Charger
@@ -104,8 +106,9 @@ func GetChargerHandler(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Charger	"returns a Charger object"
-//	@Router			/Charger [patch]
+//	@Router			/provider/{provider_id}/charger [patch]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
+//	@Param			provider_id				path	int		true	"Provider id"
 func UpdateChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger
@@ -147,7 +150,8 @@ func UpdateChargerHandler(c *gin.Context) {
 //	@Success		200	{object}	dto.Charger	"returns a Charger object"
 //	@Router			/provider/{provider_id}/charger/{charger_id} [delete]
 //	@Param			authentication	header	string	yes		"jwtToken of the user"
-//	@Param			id				path	int		true	"Charger id"
+//	@Param			provider_id				path	int		true	"Provider id"
+//	@Param			charger_id				path	int		true	"Charger id"
 func DeleteChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger

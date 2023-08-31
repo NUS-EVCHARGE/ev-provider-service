@@ -37,7 +37,7 @@ func main() {
 	err = dao.InitDB(configObj.Dsn)
 	if err != nil {
 		logrus.WithField("config", configObj).Error("failed to connect to database")
-		return
+		//return
 	}
 
 	provider.NewProviderController()
@@ -58,14 +58,13 @@ func InitHttpServer(httpAddress string) {
 func registerHandler() {
 	// use to generate swagger ui
 	//	@BasePath	/api/v1
-	//	@title		Booking Service API
+	//	@title		Provider Service API
 	//	@version	1.0
 	//	@schemes	http
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// api versioning
 	v1 := r.Group("/api/v1")
-	// get user info handler
 	providerGroup := v1.Group("provider")
 	providerGroup.POST("/", handler.CreateProviderHandler)
 	providerGroup.GET("/", handler.GetProviderHandler)

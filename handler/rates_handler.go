@@ -14,7 +14,7 @@ import (
 
 //	@Summary		Create Rates by user
 //	@Description	create Provider by user
-//	@Tags			Provider
+//	@Tags			Rates
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Rates	"returns a Provider object"
@@ -64,7 +64,7 @@ func CreateRatesHandler(c *gin.Context) {
 
 //	@Summary		Get Rates by Provider
 //	@Description	get Rates by Provider
-//	@Tags			Provider
+//	@Tags			Rates
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	[]dto.Rates	"returns a []dot.Rates object"

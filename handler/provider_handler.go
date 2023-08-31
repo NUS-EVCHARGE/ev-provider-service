@@ -19,7 +19,7 @@ import (
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/Provider [post]
+//	@Router			/provider [post]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
 func CreateProviderHandler(c *gin.Context) {
 	var (
@@ -62,7 +62,7 @@ func CreateProviderHandler(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/Provider [get]
+//	@Router			/provider [get]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
 func GetProviderHandler(c *gin.Context) {
 	var (
@@ -97,7 +97,7 @@ func GetProviderHandler(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/Provider [patch]
+//	@Router			/provider [patch]
 //	@Param			authentication	header	string	yes	"jwtToken of the user"
 func UpdateProviderHandler(c *gin.Context) {
 	var (
@@ -139,9 +139,9 @@ func UpdateProviderHandler(c *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/Provider/create_Provider [delete]
+//	@Router			/provider/{provider_id} [delete]
 //	@Param			authentication	header	string	yes		"jwtToken of the user"
-//	@Param			id				path	int		true	"Provider id"
+//	@Param			provider_id				path	int		true	"Provider id"
 func DeleteProviderHandler(c *gin.Context) {
 	var (
 		Provider dto.Provider
