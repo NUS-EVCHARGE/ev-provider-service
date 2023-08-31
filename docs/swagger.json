@@ -1,0 +1,167 @@
+{
+    "schemes": [
+        "http"
+    ],
+    "swagger": "2.0",
+    "info": {
+        "title": "Booking Service API",
+        "contact": {},
+        "version": "1.0"
+    },
+    "basePath": "/api/v1",
+    "paths": {
+        "/booking": {
+            "get": {
+                "description": "get booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Get Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            }
+        },
+        "/booking/create_booking": {
+            "delete": {
+                "description": "create booking by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "booking"
+                ],
+                "summary": "Create Booking by user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "booking id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a booking object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Booking"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "dto.Booking": {
+            "type": "object",
+            "properties": {
+                "charger_id": {
+                    "type": "integer"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "end_time": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "gorm.Model",
+                    "type": "integer"
+                },
+                "start_time": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        }
+    }
+}

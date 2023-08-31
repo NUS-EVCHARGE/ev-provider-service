@@ -1,0 +1,109 @@
+basePath: /api/v1
+definitions:
+  dto.Booking:
+    properties:
+      charger_id:
+        type: integer
+      email:
+        type: string
+      end_time:
+        type: string
+      id:
+        description: gorm.Model
+        type: integer
+      start_time:
+        type: string
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Booking Service API
+  version: "1.0"
+paths:
+  /booking:
+    get:
+      consumes:
+      - application/json
+      description: get booking by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Get Booking by user
+      tags:
+      - booking
+    patch:
+      consumes:
+      - application/json
+      description: create booking by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Create Booking by user
+      tags:
+      - booking
+    post:
+      consumes:
+      - application/json
+      description: create booking by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Create Booking by user
+      tags:
+      - booking
+  /booking/create_booking:
+    delete:
+      consumes:
+      - application/json
+      description: create booking by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: booking id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a booking object
+          schema:
+            $ref: '#/definitions/dto.Booking'
+      summary: Create Booking by user
+      tags:
+      - booking
+schemes:
+- http
+swagger: "2.0"
