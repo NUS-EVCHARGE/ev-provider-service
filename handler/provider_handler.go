@@ -45,7 +45,7 @@ func CreateProviderHandler(c *gin.Context) {
 		return
 	}
 	Provider.UserEmail = user.Email
-	err = provider.ProviderControllerObj.CreateProvider(Provider, user)
+	Provider, err = provider.ProviderControllerObj.CreateProvider(Provider, user)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Provider")
@@ -157,7 +157,7 @@ func DeleteProviderHandler(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := strconv.Atoi(c.Param("provider_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse("id but be an integer"))
 	}

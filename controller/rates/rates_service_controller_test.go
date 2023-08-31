@@ -21,12 +21,12 @@ func TestCreateRatesSuccess(t *testing.T) {
 			Status:      "",
 		}
 		actualRates = dto.Rates{
-			ID:            0,
-			ProviderId:    0,
-			NormalRate:    2,
-			PenaltyRate:   2,
-			NoShowPenalty: 2,
-			Status:        "",
+			ID:                0,
+			ProviderId:        0,
+			NormalRate:        2,
+			PenaltyRate:       2,
+			NoShowPenaltyRate: 2,
+			Status:            "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
@@ -49,12 +49,12 @@ func TestDeleteRatesSuccess(t *testing.T) {
 			Status:      "",
 		}
 		actualRates = dto.Rates{
-			ID:            0,
-			ProviderId:    0,
-			NormalRate:    2,
-			PenaltyRate:   2,
-			NoShowPenalty: 2,
-			Status:        "",
+			ID:                0,
+			ProviderId:        0,
+			NormalRate:        2,
+			PenaltyRate:       2,
+			NoShowPenaltyRate: 2,
+			Status:            "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{actualRates}, []dto.Charger{})
@@ -78,12 +78,12 @@ func TestUpdateRatesSuccess(t *testing.T) {
 			Status:      "",
 		}
 		actualRates = dto.Rates{
-			ID:            0,
-			ProviderId:    0,
-			NormalRate:    2,
-			PenaltyRate:   2,
-			NoShowPenalty: 2,
-			Status:        "",
+			ID:                0,
+			ProviderId:        0,
+			NormalRate:        2,
+			PenaltyRate:       2,
+			NoShowPenaltyRate: 2,
+			Status:            "",
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{actualRates}, []dto.Charger{})

@@ -11,9 +11,10 @@ type mockDbImpl struct {
 	chargerList []dto.Charger
 }
 
-func (m *mockDbImpl) CreateProviderEntry(provider dto.Provider) error {
+func (m *mockDbImpl) CreateProviderEntry(provider dto.Provider) (dto.Provider, error) {
 	m.providerList = append(m.providerList, provider)
-	return nil
+	provider.ID = uint(len(m.providerList) - 1)
+	return provider, nil
 }
 
 func (m *mockDbImpl) UpdateProviderEntry(provider dto.Provider) error {

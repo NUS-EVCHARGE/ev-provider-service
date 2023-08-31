@@ -70,7 +70,7 @@ func registerHandler() {
 	providerGroup.POST("/", handler.CreateProviderHandler)
 	providerGroup.GET("/", handler.GetProviderHandler)
 	providerGroup.PATCH("/", handler.UpdateProviderHandler)
-	providerGroup.DELETE("/:id", handler.DeleteProviderHandler)
+	providerGroup.DELETE("/:provider_id", handler.DeleteProviderHandler)
 	
 	providerGroup.POST("/:provider_id/charger", handler.CreateChargerHandler)
 	providerGroup.GET("/:provider_id/charger", handler.GetChargerHandler)

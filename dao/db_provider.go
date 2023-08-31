@@ -13,9 +13,9 @@ func (d *dbImpl) UpdateProviderEntry(Provider dto.Provider) error {
 	return results.Error
 }
 
-func (d*dbImpl) CreateProviderEntry(Provider dto.Provider) error {
+func (d*dbImpl) CreateProviderEntry(Provider dto.Provider) (dto.Provider, error) {
 	result := d.DbController.Create(&Provider)
-	return result.Error
+	return Provider, result.Error
 }
 
 func (d*dbImpl) DeleteProviderEntry(Provider dto.Provider) error {

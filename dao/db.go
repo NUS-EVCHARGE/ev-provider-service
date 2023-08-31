@@ -7,7 +7,7 @@ import (
 )
 
 type Database interface {
-	CreateProviderEntry(Provider dto.Provider) error
+	CreateProviderEntry(Provider dto.Provider) (dto.Provider, error)
 	UpdateProviderEntry(Provider dto.Provider) error
 	DeleteProviderEntry(Provider dto.Provider) error
 	GetAllProviderEntry(email string) (dto.Provider, error)
@@ -22,12 +22,13 @@ type Database interface {
 	DeleteRatesEntry(Rates dto.Rates) error
 	GetRatesByProviderId(providerId uint) ([]dto.Rates, error)
 }
+
 var (
 	Db Database
 )
 
 type dbImpl struct {
-	Dsn string
+	Dsn          string
 	DbController *gorm.DB
 }
 

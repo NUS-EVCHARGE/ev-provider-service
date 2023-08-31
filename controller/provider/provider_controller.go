@@ -8,7 +8,7 @@ import (
 )
 
 type ProviderController interface {
-	CreateProvider(provider dto.Provider, user userDto.User) error
+	CreateProvider(provider dto.Provider, user userDto.User) (dto.Provider, error)
 	GetProvider(user userDto.User) (dto.Provider, error)
 	DeleteProvider(providerId uint) error
 	UpdateProvider(provider dto.Provider) error
@@ -17,9 +17,9 @@ type ProviderController interface {
 type ProviderControllerImpl struct {
 }
 
-func (p ProviderControllerImpl) CreateProvider(provider dto.Provider, user userDto.User) error {
+func (p ProviderControllerImpl) CreateProvider(provider dto.Provider, user userDto.User) (dto.Provider, error) {
 	if _, err := p.GetProvider(user); err == nil {
-		return fmt.Errorf("provider already exist")
+		return dto.Provider{}, fmt.Errorf("provider already exist")
 	}
 	return dao.Db.CreateProviderEntry(provider)
 }
