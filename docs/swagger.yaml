@@ -1,0 +1,354 @@
+basePath: /api/v1
+definitions:
+  dto.Charger:
+    properties:
+      address:
+        type: string
+      id:
+        description: gorm.Model
+        type: integer
+      lat:
+        type: number
+      lng:
+        type: number
+      provider_id:
+        type: integer
+      rates_id:
+        type: integer
+      status:
+        type: string
+    type: object
+  dto.Provider:
+    properties:
+      company_name:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      status:
+        type: string
+      user_email:
+        type: string
+    type: object
+  dto.Rates:
+    properties:
+      id:
+        type: integer
+      no_show_penalty_rate:
+        type: number
+      normal_rate:
+        type: number
+      penalty_rate:
+        type: number
+      provider_id:
+        type: integer
+      status:
+        type: string
+    type: object
+info:
+  contact: {}
+  title: Provider Service API
+  version: "1.0"
+paths:
+  /provider:
+    get:
+      consumes:
+      - application/json
+      description: get Provider by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Provider'
+      summary: Get Provider by user
+      tags:
+      - Provider
+    patch:
+      consumes:
+      - application/json
+      description: create Provider by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Provider'
+      summary: Create Provider by user
+      tags:
+      - Provider
+    post:
+      consumes:
+      - application/json
+      description: create Provider by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Provider'
+      summary: Create Provider by user
+      tags:
+      - Provider
+  /provider/${provider_id}/rates:
+    get:
+      consumes:
+      - application/json
+      description: get Rates by Provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a []dot.Rates object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Rates'
+            type: array
+      summary: Get Rates by Provider
+      tags:
+      - Rates
+    patch:
+      consumes:
+      - application/json
+      description: update rates by provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Rates object
+          schema:
+            $ref: '#/definitions/dto.Rates'
+      summary: update rates by provider
+      tags:
+      - Rates
+    post:
+      consumes:
+      - application/json
+      description: create Provider by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Rates'
+      summary: Create Rates by user
+      tags:
+      - Rates
+  /provider/{provider_id}:
+    delete:
+      consumes:
+      - application/json
+      description: create Provider by user
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Provider'
+      summary: Create Provider by user
+      tags:
+      - Provider
+  /provider/{provider_id}/charger:
+    get:
+      consumes:
+      - application/json
+      description: get Charger by provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a list of Charger object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Charger'
+            type: array
+      summary: Get Charger by provider
+      tags:
+      - Charger
+    patch:
+      consumes:
+      - application/json
+      description: Update Charger by provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Charger object
+          schema:
+            $ref: '#/definitions/dto.Charger'
+      summary: Update Charger by provider
+      tags:
+      - Charger
+    post:
+      consumes:
+      - application/json
+      description: create Charger by provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Charger object
+          schema:
+            $ref: '#/definitions/dto.Charger'
+      summary: Create Charger by provider
+      tags:
+      - Charger
+  /provider/{provider_id}/charger/{charger_id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Charger by charger id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      - description: Charger id
+        in: path
+        name: charger_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Charger object
+          schema:
+            $ref: '#/definitions/dto.Charger'
+      summary: Delete Charger by charger id
+      tags:
+      - Charger
+  /provider/{provider_id}/rates/{rates_id}:
+    delete:
+      consumes:
+      - application/json
+      description: delete rates by rates id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      - description: rates id
+        in: path
+        name: rates_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns true/false
+          schema:
+            $ref: '#/definitions/dto.Rates'
+      summary: delete rates by rates id
+      tags:
+      - Rates
+schemes:
+- http
+swagger: "2.0"
