@@ -61,7 +61,7 @@ func registerHandler() {
 	//	@title		Provider Service API
 	//	@version	1.0
 	//	@schemes	http
-	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
+	r.GET("provider/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
 
 	// api versioning
 	v1 := r.Group("/api/v1")
@@ -70,7 +70,7 @@ func registerHandler() {
 	providerGroup.GET("/", handler.GetProviderHandler)
 	providerGroup.PATCH("/", handler.UpdateProviderHandler)
 	providerGroup.DELETE("/:provider_id", handler.DeleteProviderHandler)
-	
+
 	providerGroup.POST("/:provider_id/charger", handler.CreateChargerHandler)
 	providerGroup.GET("/:provider_id/charger", handler.GetChargerHandler)
 	providerGroup.PATCH("/:provider_id/charger", handler.UpdateChargerHandler)
