@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"ev-provider-service/config"
 	"ev-provider-service/controller/charger"
 	"ev-provider-service/controller/provider"
@@ -13,11 +14,17 @@ import (
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
+	"os"
 )
 
 var (
 	r *gin.Engine
 )
+
+type DatabaseSecret struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
 
 func main() {
 	var (
@@ -33,8 +40,25 @@ func main() {
 		return
 	}
 
+	var hostname string
+	var database DatabaseSecret
+	secret := os.Getenv("MYSQL_PASSWORD")
+	if secret != "" {
+		// Parse the JSON data into the struct
+		if err := json.Unmarshal([]byte(secret), &database); err != nil {
+			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
+			return
+		}
+	}
+
+	if database.Password != "" {
+		hostname = database.Username + ":" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	} else {
+		hostname = configObj.Dsn // localhost
+	}
+
 	// init db
-	err = dao.InitDB(configObj.Dsn)
+	err = dao.InitDB(hostname)
 	if err != nil {
 		logrus.WithField("config", configObj).Error("failed to connect to database")
 		return
