@@ -13,14 +13,19 @@ import (
 	"strconv"
 )
 
-//	@Summary		Create Provider by user
-//	@Description	create Provider by user
-//	@Tags			Provider
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/provider [post]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+func GetBookingHealthCheckHandler(c *gin.Context) {
+	c.JSON(http.StatusOK, CreateResponse("Welcome to ev-providers-service"))
+	return
+}
+
+// @Summary		Create Provider by user
+// @Description	create Provider by user
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Provider	"returns a Provider object"
+// @Router			/provider [post]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func CreateProviderHandler(c *gin.Context) {
 	var (
 		user     userDto.User
@@ -56,14 +61,14 @@ func CreateProviderHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Get Provider by user
-//	@Description	get Provider by user
-//	@Tags			Provider
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/provider [get]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+// @Summary		Get Provider by user
+// @Description	get Provider by user
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Provider	"returns a Provider object"
+// @Router			/provider [get]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func GetProviderHandler(c *gin.Context) {
 	var (
 		user     userDto.User
@@ -91,14 +96,14 @@ func GetProviderHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Create Provider by user
-//	@Description	create Provider by user
-//	@Tags			Provider
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/provider [patch]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
+// @Summary		Create Provider by user
+// @Description	create Provider by user
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Provider	"returns a Provider object"
+// @Router			/provider [patch]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
 func UpdateProviderHandler(c *gin.Context) {
 	var (
 		user     userDto.User
@@ -133,15 +138,15 @@ func UpdateProviderHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Create Provider by user
-//	@Description	create Provider by user
-//	@Tags			Provider
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Provider	"returns a Provider object"
-//	@Router			/provider/{provider_id} [delete]
-//	@Param			authentication	header	string	yes		"jwtToken of the user"
-//	@Param			provider_id				path	int		true	"Provider id"
+// @Summary		Create Provider by user
+// @Description	create Provider by user
+// @Tags			Provider
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Provider	"returns a Provider object"
+// @Router			/provider/{provider_id} [delete]
+// @Param			authentication	header	string	yes		"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
 func DeleteProviderHandler(c *gin.Context) {
 	var (
 		Provider dto.Provider
