@@ -1,8 +1,8 @@
 package rates
 
 import (
-	"ev-provider-service/dao"
-	"ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )

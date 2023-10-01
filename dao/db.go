@@ -1,7 +1,7 @@
 package dao
 
 import (
-	"ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )

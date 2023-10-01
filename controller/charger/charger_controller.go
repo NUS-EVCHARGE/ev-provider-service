@@ -1,8 +1,8 @@
 package charger
 
 import (
-	"ev-provider-service/dao"
-	"ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
 type ChargerController interface {
@@ -13,7 +13,6 @@ type ChargerController interface {
 }
 
 type ChargerImpl struct {
-
 }
 
 func (c *ChargerImpl) CreateCharger(charger dto.Charger) error {

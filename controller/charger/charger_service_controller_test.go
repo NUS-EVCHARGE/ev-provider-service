@@ -1,8 +1,8 @@
 package charger
 
 import (
-	"ev-provider-service/dao"
-	"ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
@@ -12,7 +12,7 @@ func setup() {
 }
 func TestCreateChargerSuccess(t *testing.T) {
 	setup()
-	
+
 	var (
 		provider = dto.Provider{
 			ID:          0,
@@ -30,7 +30,7 @@ func TestCreateChargerSuccess(t *testing.T) {
 			Status:     "",
 		}
 	)
-	
+
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
 
 	err := ChargerControllerObj.CreateCharger(actualCharger)

@@ -1,26 +1,26 @@
 package handler
 
 import (
-	"ev-provider-service/config"
-	"ev-provider-service/controller/charger"
-	"ev-provider-service/dto"
-	"ev-provider-service/helper"
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/config"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
 )
 
-//	@Summary		Create Charger by provider
-//	@Description	create Charger by provider
-//	@Tags			Charger
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Charger	"returns a Charger object"
-//	@Router			/provider/{provider_id}/charger [post]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
-//	@Param			provider_id				path	int		true	"Provider id"
+// @Summary		Create Charger by provider
+// @Description	create Charger by provider
+// @Tags			Charger
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Charger	"returns a Charger object"
+// @Router			/provider/{provider_id}/charger [post]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
 func CreateChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger
@@ -44,7 +44,7 @@ func CreateChargerHandler(c *gin.Context) {
 		return
 	}
 
-	providerId , err := strconv.Atoi(c.Param("provider_id"))
+	providerId, err := strconv.Atoi(c.Param("provider_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
 	}
@@ -61,15 +61,15 @@ func CreateChargerHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Get Charger by provider
-//	@Description	get Charger by provider
-//	@Tags			Charger
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	[]dto.Charger	"returns a list of Charger object"
-//	@Router			/provider/{provider_id}/charger [get]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
-//	@Param			provider_id				path	int		true	"Provider id"
+// @Summary		Get Charger by provider
+// @Description	get Charger by provider
+// @Tags			Charger
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	[]dto.Charger	"returns a list of Charger object"
+// @Router			/provider/{provider_id}/charger [get]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
 func GetChargerHandler(c *gin.Context) {
 	var (
 		chargerList []dto.Charger
@@ -84,7 +84,7 @@ func GetChargerHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
-	providerId , err := strconv.Atoi(c.Param("provider_id"))
+	providerId, err := strconv.Atoi(c.Param("provider_id"))
 	if err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
 	}
@@ -100,15 +100,15 @@ func GetChargerHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Update Charger by provider
-//	@Description	Update Charger by provider
-//	@Tags			Charger
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Charger	"returns a Charger object"
-//	@Router			/provider/{provider_id}/charger [patch]
-//	@Param			authentication	header	string	yes	"jwtToken of the user"
-//	@Param			provider_id				path	int		true	"Provider id"
+// @Summary		Update Charger by provider
+// @Description	Update Charger by provider
+// @Tags			Charger
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Charger	"returns a Charger object"
+// @Router			/provider/{provider_id}/charger [patch]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
 func UpdateChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger
@@ -142,16 +142,16 @@ func UpdateChargerHandler(c *gin.Context) {
 	return
 }
 
-//	@Summary		Delete Charger by charger id
-//	@Description	Delete Charger by charger id
-//	@Tags			Charger
-//	@Accept			json
-//	@Produce		json
-//	@Success		200	{object}	dto.Charger	"returns a Charger object"
-//	@Router			/provider/{provider_id}/charger/{charger_id} [delete]
-//	@Param			authentication	header	string	yes		"jwtToken of the user"
-//	@Param			provider_id				path	int		true	"Provider id"
-//	@Param			charger_id				path	int		true	"Charger id"
+// @Summary		Delete Charger by charger id
+// @Description	Delete Charger by charger id
+// @Tags			Charger
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	dto.Charger	"returns a Charger object"
+// @Router			/provider/{provider_id}/charger/{charger_id} [delete]
+// @Param			authentication	header	string	yes		"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
+// @Param			charger_id				path	int		true	"Charger id"
 func DeleteChargerHandler(c *gin.Context) {
 	var (
 		Charger dto.Charger

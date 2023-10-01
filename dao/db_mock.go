@@ -1,14 +1,14 @@
 package dao
 
 import (
-	"ev-provider-service/dto"
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
 type mockDbImpl struct {
 	providerList []dto.Provider
-	ratesList []dto.Rates
-	chargerList []dto.Charger
+	ratesList    []dto.Rates
+	chargerList  []dto.Charger
 }
 
 func (m *mockDbImpl) CreateProviderEntry(provider dto.Provider) (dto.Provider, error) {
@@ -30,7 +30,7 @@ func (m *mockDbImpl) DeleteProviderEntry(provider dto.Provider) error {
 		m.providerList = []dto.Provider{}
 		return nil
 	}
-	m.providerList = append(m.providerList[:int(provider.ID)],m.providerList[int(provider.ID) + 1:]...)
+	m.providerList = append(m.providerList[:int(provider.ID)], m.providerList[int(provider.ID)+1:]...)
 	return nil
 }
 
@@ -61,19 +61,19 @@ func (m *mockDbImpl) DeleteChargerEntry(charger dto.Charger) error {
 		m.chargerList = []dto.Charger{}
 		return nil
 	}
-	m.chargerList = append(m.chargerList[:int(charger.ID)],m.chargerList[int(charger.ID) + 1:]...)
+	m.chargerList = append(m.chargerList[:int(charger.ID)], m.chargerList[int(charger.ID)+1:]...)
 	return nil
 }
 
 func (m *mockDbImpl) GetAllChargerEntry(providerId uint) ([]dto.Charger, error) {
 	var chargerList []dto.Charger
 
-	for  _, c := range m.chargerList {
+	for _, c := range m.chargerList {
 		if c.ProviderId == providerId {
 			chargerList = append(chargerList, c)
-		} 
+		}
 	}
-	
+
 	return chargerList, nil
 }
 
@@ -95,7 +95,7 @@ func (m *mockDbImpl) DeleteRatesEntry(rates dto.Rates) error {
 		m.ratesList = []dto.Rates{}
 		return nil
 	}
-	m.ratesList = append(m.ratesList[:int(rates.ID)],m.ratesList[int(rates.ID) + 1:]...)
+	m.ratesList = append(m.ratesList[:int(rates.ID)], m.ratesList[int(rates.ID)+1:]...)
 	return nil
 }
 
@@ -112,7 +112,7 @@ func (m *mockDbImpl) GetRatesByProviderId(providerId uint) ([]dto.Rates, error) 
 func NewMockDatabase(providerList []dto.Provider, ratesList []dto.Rates, chargerList []dto.Charger) Database {
 	return &mockDbImpl{
 		providerList: providerList,
-		ratesList: ratesList,
-		chargerList: chargerList,
+		ratesList:    ratesList,
+		chargerList:  chargerList,
 	}
 }

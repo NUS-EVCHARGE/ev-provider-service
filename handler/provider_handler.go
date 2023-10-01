@@ -1,11 +1,11 @@
 package handler
 
 import (
-	"ev-provider-service/config"
-	"ev-provider-service/controller/provider"
-	"ev-provider-service/dto"
-	"ev-provider-service/helper"
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/config"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	userDto "github.com/NUS-EVCHARGE/ev-user-service/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"

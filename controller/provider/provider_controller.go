@@ -1,9 +1,9 @@
 package provider
 
 import (
-	"ev-provider-service/dao"
-	"ev-provider-service/dto"
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	userDto "github.com/NUS-EVCHARGE/ev-user-service/dto"
 )
 

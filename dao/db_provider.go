@@ -1,8 +1,8 @@
 package dao
 
 import (
-	"ev-provider-service/dto"
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
 func (d *dbImpl) UpdateProviderEntry(Provider dto.Provider) error {
