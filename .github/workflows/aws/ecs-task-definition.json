@@ -3,7 +3,7 @@
     {
       "name": "ev-provider-service",
       "cpu": 0,
-      "memoryReservation": 126,
+      "memoryReservation": 64,
       "portMappings": [
         {
           "name": "ev-provider-service-8080-tcp",
