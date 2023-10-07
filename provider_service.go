@@ -77,7 +77,7 @@ func InitHttpServer(httpAddress string) {
 	r.Use(cors.New(cors.Config{
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
-		AllowHeaders:     []string{"Origin"},
+		AllowHeaders:     []string{"Origin", "authentication"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
