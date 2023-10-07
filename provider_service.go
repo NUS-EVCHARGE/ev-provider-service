@@ -10,11 +10,13 @@ import (
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"os"
+	"time"
 )
 
 var (
@@ -72,6 +74,15 @@ func main() {
 
 func InitHttpServer(httpAddress string) {
 	r = gin.Default()
+	r.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowOrigins:     []string{"*"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE"},
+		AllowHeaders:     []string{"Origin"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge: 12 * time.Hour,
+	}))
 	registerHandler()
 
 	if err := r.Run(httpAddress); err != nil {
