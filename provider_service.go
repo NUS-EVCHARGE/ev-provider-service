@@ -75,12 +75,12 @@ func main() {
 func InitHttpServer(httpAddress string) {
 	r = gin.Default()
 	r.Use(cors.New(cors.Config{
-		AllowOrigins:  []string{"*"},
-		AllowMethods:  []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
-		AllowHeaders:  []string{"Origin", "Content-Length", "Content-Type", "authentication"},
-		ExposeHeaders: []string{"Content-Length"},
-		//AllowCredentials: true,
-		MaxAge: 12 * time.Hour,
+		AllowOrigins:     []string{"*", "http://localhost:3000"},
+		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
+		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "authentication"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		MaxAge:           12 * time.Hour,
 	}))
 	registerHandler()
 
