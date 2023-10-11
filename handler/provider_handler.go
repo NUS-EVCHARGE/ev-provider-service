@@ -89,7 +89,7 @@ func GetProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error getting Provider")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, Provider)
