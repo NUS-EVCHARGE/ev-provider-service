@@ -116,7 +116,7 @@ const docTemplate = `{
                 "tags": [
                     "Rates"
                 ],
-                "summary": "Get Rates by Provider",
+                "summary": "Get Rate by Rate id",
                 "parameters": [
                     {
                         "type": "string",
@@ -252,6 +252,47 @@ const docTemplate = `{
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/dto.Charger"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/rates/{rates_id}": {
+            "get": {
+                "description": "get Rates by Provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rates"
+                ],
+                "summary": "Get Rate by Rate id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "rates id",
+                        "name": "rates_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a []dot.Rates object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.Rates"
                             }
                         }
                     }

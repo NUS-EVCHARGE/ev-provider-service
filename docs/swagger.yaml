@@ -133,7 +133,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Rates'
             type: array
-      summary: Get Rates by Provider
+      summary: Get Rate by Rate id
       tags:
       - Rates
     patch:
@@ -376,6 +376,33 @@ paths:
       summary: Get Charger by charger id
       tags:
       - Charger
+  /provider/rates/{rates_id}:
+    get:
+      consumes:
+      - application/json
+      description: get Rates by Provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: rates id
+        in: path
+        name: rates_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a []dot.Rates object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Rates'
+            type: array
+      summary: Get Rate by Rate id
+      tags:
+      - Rates
 schemes:
 - http
 swagger: "2.0"

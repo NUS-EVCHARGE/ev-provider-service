@@ -63,15 +63,23 @@ func CreateRatesHandler(c *gin.Context) {
 }
 
 // @Summary		Get Rates by Provider
+// @Summary		Get Rate by Rate id
 // @Description	get Rates by Provider
 // @Tags			Rates
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	[]dto.Rates	"returns a []dot.Rates object"
 // @Router			/provider/${provider_id}/rates [get]
+// @Router			/provider/rates/{rates_id} [get]
 // @Param			authentication	header	string	yes	"jwtToken of the user"
 // @Param			provider_id				path	int		true	"provider id"
+// @Param		rates_id				path	int		true	"rates id"
 func GetRatesHandler(c *gin.Context) {
+
+	var (
+		ratesList []dto.Rates
+	)
+
 	tokenStr := c.GetHeader("Authentication")
 
 	// Get User information
@@ -83,12 +91,29 @@ func GetRatesHandler(c *gin.Context) {
 		return
 	}
 
-	providerIdInt, err := strconv.Atoi(c.Param("provider_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+	providerIdInt, _ := strconv.Atoi(c.Param("provider_id"))
+	rateIdInt, _ := strconv.Atoi(c.Param("rates_id"))
+
+	if providerIdInt != 0 {
+		ratesList, err = rates.RateControllerObj.GetRateByProviderId(uint(providerIdInt))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+			return
+		}
+	} else if rateIdInt != 0 {
+		rateById, rateErr := rates.RateControllerObj.GetRateByRateId(uint(rateIdInt))
+		if rateErr != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", rateErr)))
+			return
+		}
+		ratesList = append(ratesList, rateById)
 	}
 
-	ratesList, err := rates.RateControllerObj.GetRateByProviderId(uint(providerIdInt))
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting rates")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
 
 	c.JSON(http.StatusOK, ratesList)
 	return

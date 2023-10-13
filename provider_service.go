@@ -113,6 +113,7 @@ func registerHandler() {
 
 	v1.POST("/provider/:provider_id/rates", handler.CreateRatesHandler)
 	v1.GET("/provider/:provider_id/rates", handler.GetRatesHandler)
+	v1.GET("/provider/rates/:rates_id", handler.GetRatesHandler)
 	v1.PATCH("/provider/:provider_id/rates", handler.UpdateRatesHandler)
 	v1.DELETE("/provider/:provider_id/rates/:rates_id", handler.DeleteRatesHandler)
 }
