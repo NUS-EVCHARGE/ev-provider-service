@@ -213,7 +213,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get Charger by provider
+      description: get Charger by provider id or charger id
       parameters:
       - description: jwtToken of the user
         in: header
@@ -233,7 +233,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Charger'
             type: array
-      summary: Get Charger by provider
+      summary: Get Charger by charger id
       tags:
       - Charger
     patch:
@@ -349,6 +349,33 @@ paths:
       summary: delete rates by rates id
       tags:
       - Rates
+  /provider/charger/{charger_id}:
+    get:
+      consumes:
+      - application/json
+      description: get Charger by provider id or charger id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Charger id
+        in: path
+        name: charger_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a list of Charger object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Charger'
+            type: array
+      summary: Get Charger by charger id
+      tags:
+      - Charger
 schemes:
 - http
 swagger: "2.0"

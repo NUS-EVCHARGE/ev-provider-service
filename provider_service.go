@@ -107,6 +107,7 @@ func registerHandler() {
 
 	v1.POST("/provider/:provider_id/charger", handler.CreateChargerHandler)
 	v1.GET("/provider/:provider_id/charger", handler.GetChargerHandler)
+	v1.GET("/provider/charger/:charger_id", handler.GetChargerHandler)
 	v1.PATCH("/provider/:provider_id/charger", handler.UpdateChargerHandler)
 	v1.DELETE("/provider/:provider_id/charger/:charger_id", handler.DeleteChargerHandler)
 
