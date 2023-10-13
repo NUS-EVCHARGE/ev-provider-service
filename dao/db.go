@@ -22,6 +22,7 @@ type Database interface {
 	UpdateRatesEntry(Rates dto.Rates) error
 	DeleteRatesEntry(Rates dto.Rates) error
 	GetRatesByProviderId(providerId uint) ([]dto.Rates, error)
+	GetRatesByRateId(rateId uint) (dto.Rates, error)
 }
 
 var (
