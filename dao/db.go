@@ -16,6 +16,7 @@ type Database interface {
 	UpdateChargerEntry(Charger dto.Charger) error
 	DeleteChargerEntry(Charger dto.Charger) error
 	GetAllChargerEntry(providerId uint) ([]dto.Charger, error)
+	GetChargerById(chargerId uint) (dto.Charger, error)
 
 	CreateRatesEntry(Rates dto.Rates) error
 	UpdateRatesEntry(Rates dto.Rates) error

@@ -32,3 +32,10 @@ func (d *dbImpl) GetAllChargerEntry(providerId uint) ([]dto.Charger, error) {
 	results := d.DbController.Find(&existingCharger, "provider_id = ?", providerId)
 	return existingCharger, results.Error
 }
+
+func (d *dbImpl) GetChargerById(chargerId uint) (dto.Charger, error) {
+	var existingCharger dto.Charger
+
+	results := d.DbController.Find(&existingCharger, "id = ?", chargerId)
+	return existingCharger, results.Error
+}

@@ -212,6 +212,47 @@
                 }
             }
         },
+        "/provider/charger/{charger_id}": {
+            "get": {
+                "description": "get Charger by provider id or charger id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Charger"
+                ],
+                "summary": "Get Charger by charger id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Charger id",
+                        "name": "charger_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a list of Charger object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.Charger"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/provider/{provider_id}": {
             "delete": {
                 "description": "create Provider by user",
@@ -252,7 +293,7 @@
         },
         "/provider/{provider_id}/charger": {
             "get": {
-                "description": "get Charger by provider",
+                "description": "get Charger by provider id or charger id",
                 "consumes": [
                     "application/json"
                 ],
@@ -262,7 +303,7 @@
                 "tags": [
                     "Charger"
                 ],
-                "summary": "Get Charger by provider",
+                "summary": "Get Charger by charger id",
                 "parameters": [
                     {
                         "type": "string",

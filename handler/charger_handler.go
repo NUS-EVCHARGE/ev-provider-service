@@ -62,14 +62,17 @@ func CreateChargerHandler(c *gin.Context) {
 }
 
 // @Summary		Get Charger by provider
-// @Description	get Charger by provider
+// @Summary 	Get Charger by charger id
+// @Description	get Charger by provider id or charger id
 // @Tags			Charger
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	[]dto.Charger	"returns a list of Charger object"
 // @Router			/provider/{provider_id}/charger [get]
+// @Router			/provider/charger/{charger_id} [get]
 // @Param			authentication	header	string	yes	"jwtToken of the user"
 // @Param			provider_id				path	int		true	"Provider id"
+// @Param			charger_id				path	int		true	"Charger id"
 func GetChargerHandler(c *gin.Context) {
 	var (
 		chargerList []dto.Charger
@@ -84,12 +87,24 @@ func GetChargerHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
+	//providerId, err := strconv.Atoi(c.Param("provider_id"))
+	//if err != nil {
+	//	c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+	//}
 	providerId, err := strconv.Atoi(c.Param("provider_id"))
-	if err != nil {
-		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+	chargerId, err := strconv.Atoi(c.Param("charger_id"))
+
+	if chargerId != 0 {
+		chargerId, err := strconv.Atoi(c.Param("charger_id"))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse("charger id must be an integer"))
+		}
+		chargerResult, err := charger.ChargerControllerObj.GetChargerById(uint(chargerId))
+		chargerList = append(chargerList, chargerResult)
+	} else if providerId != 0 {
+		chargerList, err = charger.ChargerControllerObj.GetCharger(uint(providerId))
 	}
 
-	chargerList, err = charger.ChargerControllerObj.GetCharger(uint(providerId))
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error getting Charger")
