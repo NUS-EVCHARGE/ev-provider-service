@@ -495,6 +495,47 @@ const docTemplate = `{
                 }
             }
         },
+        "/provider/{provider_id}/chargerandrate": {
+            "get": {
+                "description": "get Charger and Rate by provider id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Charger"
+                ],
+                "summary": "Get Charger and Rate by provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Provider id",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a list of Charger object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.ChargerRate"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/provider/{provider_id}/rates/{rates_id}": {
             "delete": {
                 "description": "delete rates by rates id",
@@ -570,6 +611,33 @@ const docTemplate = `{
                 },
                 "rates_id": {
                     "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ChargerRate": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "gorm.Model",
+                    "type": "integer"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                },
+                "provider_id": {
+                    "type": "integer"
+                },
+                "rates": {
+                    "$ref": "#/definitions/dto.Rates"
                 },
                 "status": {
                     "type": "string"
