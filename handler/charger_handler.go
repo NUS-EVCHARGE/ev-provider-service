@@ -122,7 +122,7 @@ func GetChargerHandler(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	[]dto.ChargerRate	"returns a list of Charger object"
-// @Router			/provider/{provider_id}/chargerandrate
+// @Router			/provider/{provider_id}/chargerandrate [get]
 // @Param			authentication	header	string	yes	"jwtToken of the user"
 // @Param			provider_id				path	int		true	"Provider id"
 func GetChargerAndRateHandler(c *gin.Context) {
