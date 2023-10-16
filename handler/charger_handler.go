@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/rates"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"github.com/gin-gonic/gin"
@@ -113,6 +114,59 @@ func GetChargerHandler(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, chargerList)
 	return
+}
+
+// @Summary		Get Charger and Rate by provider
+// @Description	get Charger and Rate by provider id
+// @Tags			Charger
+// @Accept			json
+// @Produce		json
+// @Success		200	{object}	[]dto.ChargerRate	"returns a list of Charger object"
+// @Router			/provider/{provider_id}/chargerandrate
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @Param			provider_id				path	int		true	"Provider id"
+func GetChargerAndRateHandler(c *gin.Context) {
+	var (
+		chargerRateList []dto.ChargerRate
+	)
+	tokenStr := c.GetHeader("Authentication")
+
+	// Get User information
+	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	providerId, err := strconv.Atoi(c.Param("provider_id"))
+
+	if providerId != 0 {
+		chargerList, err := charger.ChargerControllerObj.GetCharger(uint(providerId))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse("provider id must be a valid integer"))
+		}
+		for _, charger := range chargerList {
+			chargerRate, err := rates.RateControllerObj.GetRateByRateId(charger.RatesId)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, CreateResponse("provider id must be a valid integer"))
+			}
+			item := dto.ChargerRate{
+				ID:         charger.ID,
+				ProviderId: charger.ProviderId,
+				Address:    charger.Address,
+				Lat:        charger.Lat,
+				Lng:        charger.Lng,
+				Status:     charger.Status,
+				Rates:      chargerRate,
+			}
+
+			chargerRateList = append(chargerRateList, item)
+		}
+	}
+
+	c.JSON(http.StatusOK, chargerRateList)
 }
 
 // @Summary		Update Charger by provider
