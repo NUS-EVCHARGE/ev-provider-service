@@ -111,7 +111,7 @@
                 "tags": [
                     "Rates"
                 ],
-                "summary": "Get Rates by Provider",
+                "summary": "Get Rate by Rate id",
                 "parameters": [
                     {
                         "type": "string",
@@ -212,6 +212,88 @@
                 }
             }
         },
+        "/provider/charger/{charger_id}": {
+            "get": {
+                "description": "get Charger by provider id or charger id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Charger"
+                ],
+                "summary": "Get Charger by charger id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Charger id",
+                        "name": "charger_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a list of Charger object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.Charger"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/rates/{rates_id}": {
+            "get": {
+                "description": "get Rates by Provider",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Rates"
+                ],
+                "summary": "Get Rate by Rate id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "rates id",
+                        "name": "rates_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a []dot.Rates object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.Rates"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/provider/{provider_id}": {
             "delete": {
                 "description": "create Provider by user",
@@ -252,7 +334,7 @@
         },
         "/provider/{provider_id}/charger": {
             "get": {
-                "description": "get Charger by provider",
+                "description": "get Charger by provider id or charger id",
                 "consumes": [
                     "application/json"
                 ],
@@ -262,7 +344,7 @@
                 "tags": [
                     "Charger"
                 ],
-                "summary": "Get Charger by provider",
+                "summary": "Get Charger by charger id",
                 "parameters": [
                     {
                         "type": "string",
@@ -408,6 +490,47 @@
                 }
             }
         },
+        "/provider/{provider_id}/chargerandrate": {
+            "get": {
+                "description": "get Charger and Rate by provider id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Charger"
+                ],
+                "summary": "Get Charger and Rate by provider",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Provider id",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a list of Charger object",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.ChargerRate"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/provider/{provider_id}/rates/{rates_id}": {
             "delete": {
                 "description": "delete rates by rates id",
@@ -483,6 +606,33 @@
                 },
                 "rates_id": {
                     "type": "integer"
+                },
+                "status": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.ChargerRate": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "id": {
+                    "description": "gorm.Model",
+                    "type": "integer"
+                },
+                "lat": {
+                    "type": "number"
+                },
+                "lng": {
+                    "type": "number"
+                },
+                "provider_id": {
+                    "type": "integer"
+                },
+                "rates": {
+                    "$ref": "#/definitions/dto.Rates"
                 },
                 "status": {
                     "type": "string"

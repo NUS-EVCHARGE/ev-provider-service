@@ -113,6 +113,20 @@ func (m *mockDbImpl) GetRatesByProviderId(providerId uint) ([]dto.Rates, error) 
 	return ratesList, nil
 }
 
+func (m *mockDbImpl) GetRatesByRateId(rateId uint) (dto.Rates, error) {
+	if len(m.ratesList) <= int(rateId) {
+		return dto.Rates{}, fmt.Errorf("rates not found")
+	}
+	return m.ratesList[rateId], nil
+}
+
+func (m *mockDbImpl) GetChargerById(chargerId uint) (dto.Charger, error) {
+	if len(m.chargerList) <= int(chargerId) {
+		return dto.Charger{}, fmt.Errorf("charger not found")
+	}
+	return m.chargerList[chargerId], nil
+}
+
 func NewMockDatabase(providerList []dto.Provider, ratesList []dto.Rates, chargerList []dto.Charger) Database {
 	return &mockDbImpl{
 		providerList: providerList,

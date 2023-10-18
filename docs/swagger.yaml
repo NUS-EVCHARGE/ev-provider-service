@@ -18,6 +18,24 @@ definitions:
       status:
         type: string
     type: object
+  dto.ChargerRate:
+    properties:
+      address:
+        type: string
+      id:
+        description: gorm.Model
+        type: integer
+      lat:
+        type: number
+      lng:
+        type: number
+      provider_id:
+        type: integer
+      rates:
+        $ref: '#/definitions/dto.Rates'
+      status:
+        type: string
+    type: object
   dto.Provider:
     properties:
       company_name:
@@ -133,7 +151,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Rates'
             type: array
-      summary: Get Rates by Provider
+      summary: Get Rate by Rate id
       tags:
       - Rates
     patch:
@@ -213,7 +231,7 @@ paths:
     get:
       consumes:
       - application/json
-      description: get Charger by provider
+      description: get Charger by provider id or charger id
       parameters:
       - description: jwtToken of the user
         in: header
@@ -233,7 +251,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Charger'
             type: array
-      summary: Get Charger by provider
+      summary: Get Charger by charger id
       tags:
       - Charger
     patch:
@@ -314,6 +332,33 @@ paths:
       summary: Delete Charger by charger id
       tags:
       - Charger
+  /provider/{provider_id}/chargerandrate:
+    get:
+      consumes:
+      - application/json
+      description: get Charger and Rate by provider id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a list of Charger object
+          schema:
+            items:
+              $ref: '#/definitions/dto.ChargerRate'
+            type: array
+      summary: Get Charger and Rate by provider
+      tags:
+      - Charger
   /provider/{provider_id}/rates/{rates_id}:
     delete:
       consumes:
@@ -347,6 +392,60 @@ paths:
           schema:
             $ref: '#/definitions/dto.Rates'
       summary: delete rates by rates id
+      tags:
+      - Rates
+  /provider/charger/{charger_id}:
+    get:
+      consumes:
+      - application/json
+      description: get Charger by provider id or charger id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Charger id
+        in: path
+        name: charger_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a list of Charger object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Charger'
+            type: array
+      summary: Get Charger by charger id
+      tags:
+      - Charger
+  /provider/rates/{rates_id}:
+    get:
+      consumes:
+      - application/json
+      description: get Rates by Provider
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: rates id
+        in: path
+        name: rates_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a []dot.Rates object
+          schema:
+            items:
+              $ref: '#/definitions/dto.Rates'
+            type: array
+      summary: Get Rate by Rate id
       tags:
       - Rates
 schemes:

@@ -17,11 +17,13 @@ type Database interface {
 	DeleteChargerEntry(Charger dto.Charger) error
 	GetChargerEntryByProvider(providerId uint) ([]dto.Charger, error)
 	GetAllCharger() ([]dto.Charger, error)
+	GetChargerById(chargerId uint) (dto.Charger, error)
 
 	CreateRatesEntry(Rates dto.Rates) error
 	UpdateRatesEntry(Rates dto.Rates) error
 	DeleteRatesEntry(Rates dto.Rates) error
 	GetRatesByProviderId(providerId uint) ([]dto.Rates, error)
+	GetRatesByRateId(rateId uint) (dto.Rates, error)
 }
 
 var (

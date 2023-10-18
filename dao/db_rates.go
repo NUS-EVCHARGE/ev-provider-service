@@ -31,3 +31,9 @@ func (d *dbImpl) GetRatesByProviderId(providerId uint) ([]dto.Rates, error) {
 	results := d.DbController.Find(&ratesList, "provider_id = ?", providerId)
 	return ratesList, results.Error
 }
+
+func (d *dbImpl) GetRatesByRateId(rateId uint) (dto.Rates, error) {
+	var rates dto.Rates
+	results := d.DbController.Find(&rates, "id = ?", rateId)
+	return rates, results.Error
+}
