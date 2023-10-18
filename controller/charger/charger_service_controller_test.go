@@ -36,7 +36,7 @@ func TestCreateChargerSuccess(t *testing.T) {
 	err := ChargerControllerObj.CreateCharger(actualCharger)
 	assert.Nil(t, err)
 
-	expectedCharger, err := ChargerControllerObj.GetCharger(provider.ID)
+	expectedCharger, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
 	assert.Nil(t, err)
 	assert.Equal(t, actualCharger, expectedCharger[0])
 }
@@ -65,7 +65,7 @@ func TestDeleteChargerSuccess(t *testing.T) {
 	err := ChargerControllerObj.DeleteCharger(actualCharger.ID)
 	assert.Nil(t, err)
 
-	chargerList, err := ChargerControllerObj.GetCharger(provider.ID)
+	chargerList, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
 	assert.Nil(t, err)
 	assert.Equal(t, len(chargerList), 0)
 }
@@ -94,7 +94,7 @@ func TestUpdateChargerSuccess(t *testing.T) {
 	err := ChargerControllerObj.UpdateCharger(actualCharger)
 	assert.Nil(t, err)
 
-	chargerList, err := ChargerControllerObj.GetCharger(provider.ID)
+	chargerList, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
 	assert.Nil(t, err)
 	assert.Equal(t, actualCharger, chargerList[0])
 }

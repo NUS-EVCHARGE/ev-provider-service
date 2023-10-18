@@ -40,7 +40,7 @@ func CreateChargerHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 
@@ -54,7 +54,7 @@ func CreateChargerHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Charger")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, Charger)
@@ -86,14 +86,16 @@ func GetChargerHandler(c *gin.Context) {
 	}
 	providerId, err := strconv.Atoi(c.Param("provider_id"))
 	if err != nil {
-		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+		// return all chargers as provider id cannot be parsed
+		chargerList, err = charger.ChargerControllerObj.GetAllCharger()
+	} else {
+		chargerList, err = charger.ChargerControllerObj.GetChargerByProvider(uint(providerId))
 	}
 
-	chargerList, err = charger.ChargerControllerObj.GetCharger(uint(providerId))
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error getting Charger")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, chargerList)
@@ -128,14 +130,14 @@ func UpdateChargerHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	err = charger.ChargerControllerObj.UpdateCharger(Charger)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Charger", Charger).WithField("err", err).Error("error update Charger")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, Charger)
@@ -175,7 +177,7 @@ func DeleteChargerHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Charger", Charger).WithField("err", err).Error("error update Charger")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, CreateResponse("Charger deletion success"))

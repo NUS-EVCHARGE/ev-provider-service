@@ -11,6 +11,10 @@ type mockDbImpl struct {
 	chargerList  []dto.Charger
 }
 
+func (m *mockDbImpl) GetAllCharger() ([]dto.Charger, error) {
+	return m.chargerList, nil
+}
+
 func (m *mockDbImpl) CreateProviderEntry(provider dto.Provider) (dto.Provider, error) {
 	m.providerList = append(m.providerList, provider)
 	provider.ID = uint(len(m.providerList) - 1)
@@ -65,7 +69,7 @@ func (m *mockDbImpl) DeleteChargerEntry(charger dto.Charger) error {
 	return nil
 }
 
-func (m *mockDbImpl) GetAllChargerEntry(providerId uint) ([]dto.Charger, error) {
+func (m *mockDbImpl) GetChargerEntryByProvider(providerId uint) ([]dto.Charger, error) {
 	var chargerList []dto.Charger
 
 	for _, c := range m.chargerList {

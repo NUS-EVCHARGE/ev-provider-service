@@ -26,9 +26,16 @@ func (d *dbImpl) DeleteChargerEntry(Charger dto.Charger) error {
 	return results.Error
 }
 
-func (d *dbImpl) GetAllChargerEntry(providerId uint) ([]dto.Charger, error) {
+func (d *dbImpl) GetChargerEntryByProvider(providerId uint) ([]dto.Charger, error) {
 	var existingCharger []dto.Charger
 
 	results := d.DbController.Find(&existingCharger, "provider_id = ?", providerId)
+	return existingCharger, results.Error
+}
+
+func (d *dbImpl) GetAllCharger() ([]dto.Charger, error) {
+	var existingCharger []dto.Charger
+
+	results := d.DbController.Find(&existingCharger)
 	return existingCharger, results.Error
 }
