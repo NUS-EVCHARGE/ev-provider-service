@@ -40,7 +40,7 @@ func CreateRatesHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 
@@ -54,7 +54,7 @@ func CreateRatesHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error adding rates")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 
@@ -151,7 +151,7 @@ func UpdateRatesHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	Rates.ProviderId = uint(providerIdInt)
@@ -159,7 +159,7 @@ func UpdateRatesHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Rates", Rates).WithField("err", err).Error("error update rates")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, Rates)
@@ -200,7 +200,7 @@ func DeleteRatesHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Provider", Provider).WithField("err", err).Error("error update Provider")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, CreateResponse("Provider deletion success"))

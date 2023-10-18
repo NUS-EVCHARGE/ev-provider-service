@@ -46,7 +46,7 @@ func CreateProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	Provider.UserEmail = user.Email
@@ -54,7 +54,7 @@ func CreateProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Provider")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, Provider)
@@ -123,7 +123,7 @@ func UpdateProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	Provider.UserEmail = user.Email
@@ -131,7 +131,7 @@ func UpdateProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Provider", Provider).WithField("err", err).Error("error update Provider")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, Provider)
@@ -170,7 +170,7 @@ func DeleteProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Provider", Provider).WithField("err", err).Error("error update Provider")
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
 		return
 	}
 	c.JSON(http.StatusOK, CreateResponse("Provider deletion success"))

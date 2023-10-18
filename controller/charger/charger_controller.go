@@ -8,8 +8,10 @@ import (
 type ChargerController interface {
 	CreateCharger(charger dto.Charger) error
 	UpdateCharger(charger dto.Charger) error
-	GetCharger(providerId uint) ([]dto.Charger, error)
+	GetChargerByProvider(providerId uint) ([]dto.Charger, error)
+	GetAllCharger() ([]dto.Charger, error)
 	GetChargerById(chargerId uint) (dto.Charger, error)
+
 	DeleteCharger(chargerId uint) error
 }
 
@@ -24,8 +26,12 @@ func (c *ChargerImpl) UpdateCharger(charger dto.Charger) error {
 	return dao.Db.UpdateChargerEntry(charger)
 }
 
-func (c *ChargerImpl) GetCharger(providerId uint) ([]dto.Charger, error) {
-	return dao.Db.GetAllChargerEntry(providerId)
+func (c *ChargerImpl) GetChargerByProvider(providerId uint) ([]dto.Charger, error) {
+	return dao.Db.GetChargerEntryByProvider(providerId)
+}
+
+func (c *ChargerImpl) GetAllCharger() ([]dto.Charger, error) {
+	return dao.Db.GetAllCharger()
 }
 
 func (c *ChargerImpl) GetChargerById(chargerId uint) (dto.Charger, error) {
