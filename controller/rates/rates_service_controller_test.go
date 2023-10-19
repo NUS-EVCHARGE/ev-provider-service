@@ -30,7 +30,7 @@ func TestCreateRatesSuccess(t *testing.T) {
 		}
 	)
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
-	err := RateControllerObj.AddRate(actualRates)
+	err := RateControllerObj.AddRate(&actualRates)
 	assert.Nil(t, err)
 
 	expectedRates, err := RateControllerObj.GetRateByProviderId(provider.ID)
