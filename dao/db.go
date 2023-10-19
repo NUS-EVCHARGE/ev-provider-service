@@ -12,14 +12,14 @@ type Database interface {
 	DeleteProviderEntry(Provider dto.Provider) error
 	GetAllProviderEntry(email string) (dto.Provider, error)
 
-	CreateChargerEntry(Charger dto.Charger) error
+	CreateChargerEntry(Charger *dto.Charger) error
 	UpdateChargerEntry(Charger dto.Charger) error
 	DeleteChargerEntry(Charger dto.Charger) error
 	GetChargerEntryByProvider(providerId uint) ([]dto.Charger, error)
 	GetAllCharger() ([]dto.Charger, error)
 	GetChargerById(chargerId uint) (dto.Charger, error)
 
-	CreateRatesEntry(Rates dto.Rates) error
+	CreateRatesEntry(Rates *dto.Rates) error
 	UpdateRatesEntry(Rates dto.Rates) error
 	DeleteRatesEntry(Rates dto.Rates) error
 	GetRatesByProviderId(providerId uint) ([]dto.Rates, error)

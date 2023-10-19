@@ -229,7 +229,7 @@ const docTemplate = `{
                 "tags": [
                     "Charger"
                 ],
-                "summary": "Get Charger by charger id",
+                "summary": "Get all Charger",
                 "parameters": [
                     {
                         "type": "string",
@@ -349,7 +349,7 @@ const docTemplate = `{
                 "tags": [
                     "Charger"
                 ],
-                "summary": "Get Charger by charger id",
+                "summary": "Get all Charger",
                 "parameters": [
                     {
                         "type": "string",
@@ -505,9 +505,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Charger"
+                    "ChargerRate"
                 ],
-                "summary": "Get Charger and Rate by provider",
+                "summary": "Get Charger and Rate by provider id",
                 "parameters": [
                     {
                         "type": "string",
@@ -531,6 +531,71 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/dto.ChargerRate"
                             }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Create Charger and Rate by provider id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChargerRate"
+                ],
+                "summary": "Create Charger and Rate by provider id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a ChargerRate object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChargerRate"
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "description": "Update Charger and Rate by provider Id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "ChargerRate"
+                ],
+                "summary": "Update Charger and Rate by provider Id",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "jwtToken of the user",
+                        "name": "authentication",
+                        "in": "header"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Provider id",
+                        "name": "provider_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "returns a ChargerRate object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ChargerRate"
                         }
                     }
                 }

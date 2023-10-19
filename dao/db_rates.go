@@ -13,7 +13,7 @@ func (d *dbImpl) UpdateRatesEntry(Rates dto.Rates) error {
 	return results.Error
 }
 
-func (d *dbImpl) CreateRatesEntry(Rates dto.Rates) error {
+func (d *dbImpl) CreateRatesEntry(Rates *dto.Rates) error {
 	result := d.DbController.Create(&Rates)
 	return result.Error
 }

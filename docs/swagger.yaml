@@ -251,7 +251,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Charger'
             type: array
-      summary: Get Charger by charger id
+      summary: Get all Charger
       tags:
       - Charger
     patch:
@@ -356,9 +356,52 @@ paths:
             items:
               $ref: '#/definitions/dto.ChargerRate'
             type: array
-      summary: Get Charger and Rate by provider
+      summary: Get Charger and Rate by provider id
       tags:
-      - Charger
+      - ChargerRate
+    patch:
+      consumes:
+      - application/json
+      description: Update Charger and Rate by provider Id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      - description: Provider id
+        in: path
+        name: provider_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a ChargerRate object
+          schema:
+            $ref: '#/definitions/dto.ChargerRate'
+      summary: Update Charger and Rate by provider Id
+      tags:
+      - ChargerRate
+    post:
+      consumes:
+      - application/json
+      description: Create Charger and Rate by provider id
+      parameters:
+      - description: jwtToken of the user
+        in: header
+        name: authentication
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a ChargerRate object
+          schema:
+            $ref: '#/definitions/dto.ChargerRate'
+      summary: Create Charger and Rate by provider id
+      tags:
+      - ChargerRate
   /provider/{provider_id}/rates/{rates_id}:
     delete:
       consumes:
@@ -418,7 +461,7 @@ paths:
             items:
               $ref: '#/definitions/dto.Charger'
             type: array
-      summary: Get Charger by charger id
+      summary: Get all Charger
       tags:
       - Charger
   /provider/rates/{rates_id}:

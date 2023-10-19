@@ -47,8 +47,8 @@ func (m *mockDbImpl) GetAllProviderEntry(email string) (dto.Provider, error) {
 	return dto.Provider{}, fmt.Errorf("provider not found")
 }
 
-func (m *mockDbImpl) CreateChargerEntry(charger dto.Charger) error {
-	m.chargerList = append(m.chargerList, charger)
+func (m *mockDbImpl) CreateChargerEntry(charger *dto.Charger) error {
+	m.chargerList = append(m.chargerList, *charger)
 	return nil
 }
 
@@ -81,8 +81,8 @@ func (m *mockDbImpl) GetChargerEntryByProvider(providerId uint) ([]dto.Charger, 
 	return chargerList, nil
 }
 
-func (m *mockDbImpl) CreateRatesEntry(rates dto.Rates) error {
-	m.ratesList = append(m.ratesList, rates)
+func (m *mockDbImpl) CreateRatesEntry(rates *dto.Rates) error {
+	m.ratesList = append(m.ratesList, *rates)
 	return nil
 }
 

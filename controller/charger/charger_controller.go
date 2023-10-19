@@ -6,7 +6,7 @@ import (
 )
 
 type ChargerController interface {
-	CreateCharger(charger dto.Charger) error
+	CreateCharger(charger *dto.Charger) error
 	UpdateCharger(charger dto.Charger) error
 	GetChargerByProvider(providerId uint) ([]dto.Charger, error)
 	GetAllCharger() ([]dto.Charger, error)
@@ -18,7 +18,7 @@ type ChargerController interface {
 type ChargerImpl struct {
 }
 
-func (c *ChargerImpl) CreateCharger(charger dto.Charger) error {
+func (c *ChargerImpl) CreateCharger(charger *dto.Charger) error {
 	return dao.Db.CreateChargerEntry(charger)
 }
 
