@@ -51,7 +51,7 @@ func CreateChargerHandler(c *gin.Context) {
 	}
 
 	Charger.ProviderId = uint(providerId)
-	err = charger.ChargerControllerObj.CreateCharger(Charger)
+	err = charger.ChargerControllerObj.CreateCharger(&Charger)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Charger")
@@ -152,9 +152,9 @@ func GetAllChargerHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Get Charger and Rate by provider
+// @Summary		Get Charger and Rate by provider id
 // @Description	get Charger and Rate by provider id
-// @Tags			Charger
+// @Tags			ChargerRate
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	[]dto.ChargerRate	"returns a list of Charger object"
@@ -203,6 +203,154 @@ func GetChargerAndRateHandler(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, chargerRateList)
+}
+
+// @summary		Create Charger and Rate by provider id
+// @description	Create Charger and Rate by provider id
+// @tags			ChargerRate
+// @accept			json
+// @produce		json
+// @success		200	{object}	dto.ChargerRate	"returns a ChargerRate object"
+// @router			/provider/{provider_id}/chargerandrate [post]
+// @param			authentication	header	string	yes	"jwtToken of the user"
+func CreateChargerAndRateHandlerByProviderId(c *gin.Context) {
+	var (
+		chargerRate dto.ChargerRate
+	)
+	tokenStr := c.GetHeader("Authentication")
+
+	// Get User information
+	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	err = c.BindJSON(&chargerRate)
+	if err != nil {
+		logrus.WithField("err", err).Error("error binding request")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	providerId, err := strconv.Atoi(c.Param("provider_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+	}
+
+	newRate := dto.Rates{
+		ProviderId:        uint(providerId),
+		NormalRate:        chargerRate.Rates.NormalRate,
+		PenaltyRate:       chargerRate.Rates.PenaltyRate,
+		NoShowPenaltyRate: chargerRate.Rates.NoShowPenaltyRate,
+		Status:            chargerRate.Rates.Status,
+	}
+
+	err = rates.RateControllerObj.AddRate(&newRate)
+
+	if err != nil {
+		logrus.WithField("err", err).Error("error creating Rate")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	newCharger := dto.Charger{
+		ProviderId: uint(providerId),
+		RatesId:    newRate.ID,
+		Address:    chargerRate.Address,
+		Lat:        chargerRate.Lat,
+		Lng:        chargerRate.Lng,
+		Status:     chargerRate.Status,
+	}
+
+	err = charger.ChargerControllerObj.CreateCharger(&newCharger)
+
+	if err != nil {
+		logrus.WithField("err", err).Error("error creating Charger")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	chargerRate.ID = newCharger.ID
+	chargerRate.Rates.ID = newRate.ID
+
+	c.JSON(http.StatusOK, chargerRate)
+	return
+}
+
+// @Summary		Update Charger and Rate by provider Id
+// @Description	Update Charger and Rate by provider Id
+// @Tags			ChargerRate
+// @Accept			json
+// @Produce		json
+// @success		200	{object}	dto.ChargerRate	"returns a ChargerRate object"
+// @router			/provider/{provider_id}/chargerandrate [patch]
+// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @param			provider_id				path	int		true	"Provider id"
+func UpdateChargerAndRateHandlerByProviderId(c *gin.Context) {
+	var (
+		chargerRate dto.ChargerRate
+	)
+	tokenStr := c.GetHeader("Authentication")
+
+	// Get User information
+	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
+	if err != nil {
+		// todo: change to common library
+		logrus.WithField("err", err).Error("error getting user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	err = c.BindJSON(&chargerRate)
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting request")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	providerId, err := strconv.Atoi(c.Param("provider_id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, CreateResponse("provider id must be an integer"))
+	}
+
+	newRate := dto.Rates{
+		ID:                chargerRate.Rates.ID,
+		ProviderId:        uint(providerId),
+		NormalRate:        chargerRate.Rates.NormalRate,
+		PenaltyRate:       chargerRate.Rates.PenaltyRate,
+		NoShowPenaltyRate: chargerRate.Rates.NoShowPenaltyRate,
+		Status:            chargerRate.Rates.Status,
+	}
+
+	err = rates.RateControllerObj.UpdateRate(newRate)
+	if err != nil {
+		logrus.WithField("err", err).Error("error updating Rate")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	newCharger := dto.Charger{
+		ID:         chargerRate.ID,
+		ProviderId: uint(providerId),
+		RatesId:    newRate.ID,
+		Address:    chargerRate.Address,
+		Lat:        chargerRate.Lat,
+		Lng:        chargerRate.Lng,
+		Status:     chargerRate.Status,
+	}
+
+	err = charger.ChargerControllerObj.UpdateCharger(newCharger)
+	if err != nil {
+		logrus.WithField("err", err).Error("error updating Charger")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	c.JSON(http.StatusOK, chargerRate)
+
 }
 
 // @Summary		Update Charger by provider

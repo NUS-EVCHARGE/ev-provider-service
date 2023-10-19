@@ -6,7 +6,7 @@ import (
 )
 
 type RateController interface {
-	AddRate(Rate dto.Rates) error
+	AddRate(Rate *dto.Rates) error
 	GetRateByProviderId(providerId uint) ([]dto.Rates, error)
 	GetRateByRateId(rateId uint) (dto.Rates, error)
 	DeleteRate(RateId uint) error
@@ -16,8 +16,9 @@ type RateController interface {
 type RateControllerImpl struct {
 }
 
-func (r *RateControllerImpl) AddRate(Rate dto.Rates) error {
-	return dao.Db.CreateRatesEntry(Rate)
+func (r *RateControllerImpl) AddRate(Rate *dto.Rates) error {
+	err := dao.Db.CreateRatesEntry(Rate)
+	return err
 }
 
 func (r *RateControllerImpl) GetRateByProviderId(providerId uint) ([]dto.Rates, error) {

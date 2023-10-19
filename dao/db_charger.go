@@ -13,7 +13,7 @@ func (d *dbImpl) UpdateChargerEntry(Charger dto.Charger) error {
 	return results.Error
 }
 
-func (d *dbImpl) CreateChargerEntry(Charger dto.Charger) error {
+func (d *dbImpl) CreateChargerEntry(Charger *dto.Charger) error {
 	result := d.DbController.Create(&Charger)
 	return result.Error
 }
