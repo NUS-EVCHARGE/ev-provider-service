@@ -33,7 +33,7 @@ func TestCreateChargerSuccess(t *testing.T) {
 
 	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
 
-	err := ChargerControllerObj.CreateCharger(actualCharger)
+	err := ChargerControllerObj.CreateCharger(&actualCharger)
 	assert.Nil(t, err)
 
 	expectedCharger, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
