@@ -1,8 +1,9 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
+	"time"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
@@ -10,13 +11,12 @@ import (
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
+	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 	swaggerfiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"os"
-	"time"
 )
 
 var (
@@ -43,18 +43,10 @@ func main() {
 	}
 
 	var hostname string
-	var database DatabaseSecret
-	secret := os.Getenv("MYSQL_PASSWORD")
-	if secret != "" {
-		// Parse the JSON data into the struct
-		if err := json.Unmarshal([]byte(secret), &database); err != nil {
-			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager")
-			return
-		}
-	}
+	user, pass := helper.GetDatabaseSecrets()
 
-	if database.Password != "" {
-		hostname = database.Username + ":" + database.Password + "@tcp(ev-charger-mysql-db.cdklkqeyoz4a.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	if pass != "" {
+		hostname = user + ":" + pass + "@tcp(evapp-db.c3i0qsy82gn1.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	} else {
 		hostname = configObj.Dsn // localhost
 	}
@@ -70,6 +62,10 @@ func main() {
 	charger.NewChargerController()
 	Rate.NewRateController()
 	InitHttpServer(configObj.HttpAddress)
+}
+
+func GetDatabaseSecrets() {
+	panic("unimplemented")
 }
 
 func InitHttpServer(httpAddress string) {
