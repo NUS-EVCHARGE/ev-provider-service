@@ -18,8 +18,8 @@
       "volumesFrom": [],
       "secrets": [
         {
-          "name": "MYSQL_PASSWORD",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:021983356533:secret:rds!db-8ff5565a-53f0-4c4d-9253-1d2562a6d07e-OZBnLX"
+          "name": "evapp-db-secret",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:654654201746:secret:evapp-db-secret-1IkkHk          "
         }
       ],
       "logConfiguration": {
@@ -70,9 +70,7 @@
     }
   ],
   "placementConstraints": [],
-  "compatibilities": [
-    "EC2"
-  ],
+  "compatibilities": ["EC2"],
   "cpu": "128",
   "memory": "128",
   "tags": []
