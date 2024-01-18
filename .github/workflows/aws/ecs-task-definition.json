@@ -34,8 +34,8 @@
     }
   ],
   "family": "ev-charge-ecs-ev-provider-service",
-  "taskRoleArn": "arn:aws:iam::021983356533:role/ecsTaskExecutionRole",
-  "executionRoleArn": "arn:aws:iam::021983356533:role/ecsTaskExecutionRole",
+  "taskRoleArn": "arn:aws:iam::654654201746:role/ExecutionTaskPolicy",
+  "executionRoleArn": "arn:aws:iam::654654201746:role/ExecutionTaskPolicy",
   "networkMode": "bridge",
   "revision": 22,
   "volumes": [],
