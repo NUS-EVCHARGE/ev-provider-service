@@ -72,6 +72,6 @@
   "placementConstraints": [],
   "compatibilities": ["EC2"],
   "cpu": "128",
-  "memory": "128",
+  "memory": "500",
   "tags": []
 }
