@@ -10,6 +10,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
+	"github.com/sirupsen/logrus"
 )
 
 func GetDatabaseSecrets() (string, string) {
@@ -37,6 +38,7 @@ func GetSecrets(secretName string) string {
 	if err != nil {
 		// For a list of exceptions thrown, see
 		// https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
+		logrus.WithField("err", err.Error()).Error("error gettintg secret")
 		log.Fatal(err.Error())
 	}
 
