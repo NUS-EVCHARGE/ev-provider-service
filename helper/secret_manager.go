@@ -6,6 +6,7 @@ package helper
 import (
 	"context"
 	"log"
+	"os"
 
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/config"
@@ -14,8 +15,7 @@ import (
 )
 
 func GetDatabaseSecrets() (string, string) {
-	secretName := "evapp-db-secret"
-	return "admin", GetSecrets(secretName)
+	return "admin", retrieveSecretFromSecretManager("MYSQL_PASSWORD")
 }
 
 func GetSecrets(secretName string) string {
@@ -45,4 +45,9 @@ func GetSecrets(secretName string) string {
 	// Decrypts secret using the associated KMS key.
 	var secretString string = *result.SecretString
 	return secretString
+}
+
+func retrieveSecretFromSecretManager(key string) string {
+	secret := os.Getenv(key)
+	return secret
 }

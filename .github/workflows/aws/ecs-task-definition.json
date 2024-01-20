@@ -12,6 +12,12 @@
           "appProtocol": "http"
         }
       ],
+      "secrets": [
+        {
+          "name": "MYSQL_PASSWORD",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:654654201746:secret:evapp-db-secret-1IkkHk"
+        }
+      ],
       "essential": true,
       "environment": [],
       "environmentFiles": [],
