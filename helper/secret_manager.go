@@ -15,6 +15,7 @@ import (
 )
 
 func GetDatabaseSecrets() (string, string) {
+	logrus.WithField("env", os.Environ()).Info("list of env")
 	return "admin", retrieveSecretFromSecretManager("evapp-db-secret")
 }
 
