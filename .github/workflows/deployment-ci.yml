@@ -66,7 +66,7 @@ jobs:
         #   DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          # container-name: ${{ env.CONTAINER_NAME }}
+          container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition
