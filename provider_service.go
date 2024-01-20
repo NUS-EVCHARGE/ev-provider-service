@@ -97,7 +97,7 @@ func registerHandler() {
 	// api versioning
 	v1 := r.Group("/api/v1")
 	v1.POST("/provider", handler.CreateProviderHandler)
-	v1.GET("/provider", handler.GetProviderHandler)
+	v1.GET("/provider/:provider_email", handler.GetProviderHandler)
 	v1.PATCH("/provider", handler.UpdateProviderHandler)
 	v1.DELETE("/provider/:provider_id", handler.DeleteProviderHandler)
 

@@ -16,35 +16,6 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/provider": {
-            "get": {
-                "description": "get Provider by user",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Provider"
-                ],
-                "summary": "Get Provider by user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "jwtToken of the user",
-                        "name": "authentication",
-                        "in": "header"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "returns a Provider object",
-                        "schema": {
-                            "$ref": "#/definitions/dto.Provider"
-                        }
-                    }
-                }
-            },
             "post": {
                 "description": "create Provider by user",
                 "consumes": [
@@ -57,14 +28,6 @@ const docTemplate = `{
                     "Provider"
                 ],
                 "summary": "Create Provider by user",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "jwtToken of the user",
-                        "name": "authentication",
-                        "in": "header"
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "returns a Provider object",
@@ -294,6 +257,29 @@ const docTemplate = `{
                             "items": {
                                 "$ref": "#/definitions/dto.Rates"
                             }
+                        }
+                    }
+                }
+            }
+        },
+        "/provider/{provider_email}": {
+            "get": {
+                "description": "get Provider by user",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Provider"
+                ],
+                "summary": "Get Provider by user",
+                "responses": {
+                    "200": {
+                        "description": "returns a Provider object",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Provider"
                         }
                     }
                 }

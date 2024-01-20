@@ -2,6 +2,7 @@ package dao
 
 import (
 	"fmt"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
@@ -37,8 +38,11 @@ func (m *mockDbImpl) DeleteProviderEntry(provider dto.Provider) error {
 	m.providerList = append(m.providerList[:int(provider.ID)], m.providerList[int(provider.ID)+1:]...)
 	return nil
 }
+func (m *mockDbImpl) GetAllProviderEntry() ([]dto.Provider, error) {
+	return m.providerList, nil
+}
 
-func (m *mockDbImpl) GetAllProviderEntry(email string) (dto.Provider, error) {
+func (m *mockDbImpl) GetProviderEntry(email string) (dto.Provider, error) {
 	for _, p := range m.providerList {
 		if p.UserEmail == email {
 			return p, nil

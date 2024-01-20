@@ -2,15 +2,14 @@ package handler
 
 import (
 	"fmt"
-	"github.com/NUS-EVCHARGE/ev-provider-service/config"
+	"net/http"
+	"strconv"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
-	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	userDto "github.com/NUS-EVCHARGE/ev-user-service/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
-	"net/http"
-	"strconv"
 )
 
 func GetBookingHealthCheckHandler(c *gin.Context) {
@@ -25,36 +24,26 @@ func GetBookingHealthCheckHandler(c *gin.Context) {
 // @Produce		json
 // @Success		200	{object}	dto.Provider	"returns a Provider object"
 // @Router			/provider [post]
-// @Param			authentication	header	string	yes	"jwtToken of the user"
 func CreateProviderHandler(c *gin.Context) {
 	var (
 		user     userDto.User
 		Provider dto.Provider
 	)
-	tokenStr := c.GetHeader("Authentication")
 
-	// Get User information
-	user, err := helper.GetUser(config.GetUserUrl, tokenStr)
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting user")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
-		return
-	}
-
-	err = c.BindJSON(&Provider)
+	err := c.BindJSON(&Provider)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	Provider.UserEmail = user.Email
-	Provider, err = provider.ProviderControllerObj.CreateProvider(Provider, user)
+	Provider, err = provider.ProviderControllerObj.CreateProvider(Provider)
+
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Provider")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, Provider)
@@ -67,25 +56,24 @@ func CreateProviderHandler(c *gin.Context) {
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Provider	"returns a Provider object"
-// @Router			/provider [get]
-// @Param			authentication	header	string	yes	"jwtToken of the user"
+// @Router			/provider/{provider_email} [get]
 func GetProviderHandler(c *gin.Context) {
 	var (
-		user     userDto.User
 		Provider dto.Provider
 	)
-	tokenStr := c.GetHeader("Authentication")
-
-	// Get User information
-	user, err := helper.GetUser(config.GetUserUrl, tokenStr)
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting user")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+	providerEmail := c.Param("provider_email")
+	if providerEmail == "" {
+		providerList, err := provider.ProviderControllerObj.GetAllProvider()
+		if err != nil {
+			// todo: change to common library
+			logrus.WithField("err", err).Error("error getting Provider")
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+			return
+		}
+		c.JSON(http.StatusOK, providerList)
 		return
 	}
-
-	Provider, err = provider.ProviderControllerObj.GetProvider(user)
+	Provider, err := provider.ProviderControllerObj.GetProvider(providerEmail)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error getting Provider")
@@ -109,21 +97,12 @@ func UpdateProviderHandler(c *gin.Context) {
 		user     userDto.User
 		Provider dto.Provider
 	)
-	tokenStr := c.GetHeader("Authentication")
 
-	// Get User information
-	user, err := helper.GetUser(config.GetUserUrl, tokenStr)
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting user")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
-		return
-	}
-	err = c.BindJSON(&Provider)
+	err := c.BindJSON(&Provider)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	Provider.UserEmail = user.Email
@@ -131,7 +110,7 @@ func UpdateProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Provider", Provider).WithField("err", err).Error("error update Provider")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, Provider)
@@ -146,21 +125,11 @@ func UpdateProviderHandler(c *gin.Context) {
 // @Success		200	{object}	dto.Provider	"returns a Provider object"
 // @Router			/provider/{provider_id} [delete]
 // @Param			authentication	header	string	yes		"jwtToken of the user"
-// @Param			provider_id				path	int		true	"Provider id"
+// @Param			provider_id		path	int		true	"Provider id"
 func DeleteProviderHandler(c *gin.Context) {
 	var (
 		Provider dto.Provider
 	)
-	tokenStr := c.GetHeader("Authentication")
-
-	// Get User information
-	_, err := helper.GetUser(config.GetUserUrl, tokenStr)
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting user")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
-		return
-	}
 
 	id, err := strconv.Atoi(c.Param("provider_id"))
 	if err != nil {
@@ -170,7 +139,7 @@ func DeleteProviderHandler(c *gin.Context) {
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Provider", Provider).WithField("err", err).Error("error update Provider")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v",err)))
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 	c.JSON(http.StatusOK, CreateResponse("Provider deletion success"))

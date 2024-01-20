@@ -70,25 +70,6 @@ info:
   version: "1.0"
 paths:
   /provider:
-    get:
-      consumes:
-      - application/json
-      description: get Provider by user
-      parameters:
-      - description: jwtToken of the user
-        in: header
-        name: authentication
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: returns a Provider object
-          schema:
-            $ref: '#/definitions/dto.Provider'
-      summary: Get Provider by user
-      tags:
-      - Provider
     patch:
       consumes:
       - application/json
@@ -112,11 +93,6 @@ paths:
       consumes:
       - application/json
       description: create Provider by user
-      parameters:
-      - description: jwtToken of the user
-        in: header
-        name: authentication
-        type: string
       produces:
       - application/json
       responses:
@@ -202,6 +178,21 @@ paths:
       summary: Create Rates by user
       tags:
       - Rates
+  /provider/{provider_email}:
+    get:
+      consumes:
+      - application/json
+      description: get Provider by user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: returns a Provider object
+          schema:
+            $ref: '#/definitions/dto.Provider'
+      summary: Get Provider by user
+      tags:
+      - Provider
   /provider/{provider_id}:
     delete:
       consumes:

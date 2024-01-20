@@ -12,15 +12,15 @@ import (
 	"strconv"
 )
 
-// @Summary		Create Rates by user
-// @Description	create Provider by user
-// @Tags			Rates
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	dto.Rates	"returns a Provider object"
-// @Router			/provider/${provider_id}/rates [post]
-// @Param			authentication	header	string	yes	"jwtToken of the user"
-// @Param			provider_id				path	int		true	"provider id"
+//	@Summary		Create Rates by user
+//	@Description	create Provider by user
+//	@Tags			Rates
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	dto.Rates	"returns a Provider object"
+//	@Router			/provider/${provider_id}/rates [post]
+//	@Param			authentication	header	string	yes		"jwtToken of the user"
+//	@Param			provider_id		path	int		true	"provider id"
 func CreateRatesHandler(c *gin.Context) {
 	var (
 		ratesObj dto.Rates
@@ -62,18 +62,18 @@ func CreateRatesHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Get Rates by Provider
-// @Summary		Get Rate by Rate id
-// @Description	get Rates by Provider
-// @Tags			Rates
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	[]dto.Rates	"returns a []dot.Rates object"
-// @Router			/provider/${provider_id}/rates [get]
-// @Router			/provider/rates/{rates_id} [get]
-// @Param			authentication	header	string	yes	"jwtToken of the user"
-// @Param			provider_id				path	int		true	"provider id"
-// @Param		rates_id				path	int		true	"rates id"
+//	@Summary		Get Rates by Provider
+//	@Summary		Get Rate by Rate id
+//	@Description	get Rates by Provider
+//	@Tags			Rates
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	[]dto.Rates	"returns a []dot.Rates object"
+//	@Router			/provider/${provider_id}/rates [get]
+//	@Router			/provider/rates/{rates_id} [get]
+//	@Param			authentication	header	string	yes		"jwtToken of the user"
+//	@Param			provider_id		path	int		true	"provider id"
+//	@Param			rates_id		path	int		true	"rates id"
 func GetRatesHandler(c *gin.Context) {
 
 	var (
@@ -119,15 +119,15 @@ func GetRatesHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		update rates by provider
-// @Description	update rates by provider
-// @Tags			Rates
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	dto.Rates	"returns a Rates object"
-// @Router			/provider/${provider_id}/rates [patch]
-// @Param			authentication	header	string	yes	"jwtToken of the user"
-// @Param			provider_id				path	int		true	"provider id"
+//	@Summary		update rates by provider
+//	@Description	update rates by provider
+//	@Tags			Rates
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	dto.Rates	"returns a Rates object"
+//	@Router			/provider/${provider_id}/rates [patch]
+//	@Param			authentication	header	string	yes		"jwtToken of the user"
+//	@Param			provider_id		path	int		true	"provider id"
 func UpdateRatesHandler(c *gin.Context) {
 	var (
 		Rates dto.Rates
@@ -166,17 +166,17 @@ func UpdateRatesHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		delete rates by rates id
-// @Description	delete rates by rates id
-// @Tags			Rates
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	dto.Rates	"returns true/false"
-// @Router			/provider/{provider_id}/rates/{rates_id} [delete]
-// @Param			authentication	header	string	yes		"jwtToken of the user"
-// @Param			id				path	int		true	"Provider id"
-// @Param			provider_id				path	int		true	"provider id"
-// @Param			rates_id				path	int		true	"rates id"
+//	@Summary		delete rates by rates id
+//	@Description	delete rates by rates id
+//	@Tags			Rates
+//	@Accept			json
+//	@Produce		json
+//	@Success		200	{object}	dto.Rates	"returns true/false"
+//	@Router			/provider/{provider_id}/rates/{rates_id} [delete]
+//	@Param			authentication	header	string	yes		"jwtToken of the user"
+//	@Param			id				path	int		true	"Provider id"
+//	@Param			provider_id		path	int		true	"provider id"
+//	@Param			rates_id		path	int		true	"rates id"
 func DeleteRatesHandler(c *gin.Context) {
 	var (
 		Provider dto.Provider

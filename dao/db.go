@@ -10,7 +10,8 @@ type Database interface {
 	CreateProviderEntry(Provider dto.Provider) (dto.Provider, error)
 	UpdateProviderEntry(Provider dto.Provider) error
 	DeleteProviderEntry(Provider dto.Provider) error
-	GetAllProviderEntry(email string) (dto.Provider, error)
+	GetProviderEntry(email string) (dto.Provider, error)
+	GetAllProviderEntry() ([]dto.Provider, error)
 
 	CreateChargerEntry(Charger *dto.Charger) error
 	UpdateChargerEntry(Charger dto.Charger) error
