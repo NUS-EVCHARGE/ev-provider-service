@@ -1,8 +1,11 @@
-# booking-service
+# Legacy (do not follow)
+
 #Steps
+
 1. checkout ev-user-service and `docker-compose build`
 2. in this repo, `docker-compose build`
 3. `docker ps` will see the following
+
 ```
 CONTAINER ID   IMAGE                       COMMAND                  CREATED          STATUS          PORTS                               NAMES
 27e71b3afcbe   ev-user-service:latest      "./main"                 16 seconds ago   Up 14 seconds   0.0.0.0:8080->8080/tcp              ev-user-service
