@@ -22,7 +22,7 @@ type DatabaseSecret struct {
 
 func GetDatabaseSecrets() (string, string) {
 	db := retrieveSecretFromSecretManager("evapp-db-secret")
-	return db.Username, db.Password, 
+	return db.Username, db.Password
 }
 
 func GetSecrets(secretName string) string {
