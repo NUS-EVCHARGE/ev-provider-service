@@ -67,6 +67,9 @@
     },
     {
       "name": "com.amazonaws.ecs.capability.docker-remote-api.1.29"
+    },
+    {
+      "name": "ecs.capability.secrets.asm.environment-variables"
     }
   ],
   "placementConstraints": [],
