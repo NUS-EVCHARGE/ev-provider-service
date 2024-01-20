@@ -62,11 +62,11 @@ jobs:
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
         uses: aws-actions/amazon-ecs-render-task-definition@v1
-        env:
-          DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
+        # env:
+        #   DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
         with:
-          task-definition: ${{ env.ECS_TASK_DEFINITION }}
-          container-name: ${{ env.CONTAINER_NAME }}
+          # task-definition: ${{ env.ECS_TASK_DEFINITION }}
+          # container-name: ${{ env.CONTAINER_NAME }}
           image: ${{ steps.build-image.outputs.image }}
 
       - name: Deploy Amazon ECS task definition

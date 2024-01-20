@@ -2,7 +2,6 @@
   "containerDefinitions": [
     {
       "name": "ev-provider-service",
-      "image": "654654201746.dkr.ecr.ap-southeast-1.amazonaws.com/ev-provider-service-ecr:679944aee4bdb6ffad99a083c3b23903235d7b2a",
       "cpu": 0,
       "portMappings": [
         {
