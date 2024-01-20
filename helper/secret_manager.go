@@ -15,7 +15,7 @@ import (
 )
 
 func GetDatabaseSecrets() (string, string) {
-	return "admin", retrieveSecretFromSecretManager("MYSQL_PASSWORD")
+	return "admin", retrieveSecretFromSecretManager("evapp-db-secret")
 }
 
 func GetSecrets(secretName string) string {

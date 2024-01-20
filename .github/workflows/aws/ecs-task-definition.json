@@ -14,7 +14,7 @@
       ],
       "secrets": [
         {
-          "name": "MYSQL_PASSWORD",
+          "name": "evapp-db-secret",
           "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:654654201746:secret:evapp-db-secret-1IkkHk"
         }
       ],
