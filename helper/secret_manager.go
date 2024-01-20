@@ -5,6 +5,7 @@ package helper
 
 import (
 	"context"
+	"encoding/json"
 	"log"
 	"os"
 
@@ -14,9 +15,14 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type DatabaseSecret struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 func GetDatabaseSecrets() (string, string) {
-	logrus.WithField("env", os.Environ()).Info("list of env")
-	return "admin", retrieveSecretFromSecretManager("evapp-db-secret")
+	db := retrieveSecretFromSecretManager("evapp-db-secret")
+	return db.Username, db.Password, 
 }
 
 func GetSecrets(secretName string) string {
@@ -48,7 +54,16 @@ func GetSecrets(secretName string) string {
 	return secretString
 }
 
-func retrieveSecretFromSecretManager(key string) string {
+func retrieveSecretFromSecretManager(key string) DatabaseSecret {
+	var database DatabaseSecret
+
 	secret := os.Getenv(key)
-	return secret
+	if secret != "" {
+		// Parse the JSON data into the struct
+		if err := json.Unmarshal([]byte(secret), &database); err != nil {
+			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager", key)
+			return database
+		}
+	}
+	return database
 }
