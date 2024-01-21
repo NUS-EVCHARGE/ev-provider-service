@@ -16,10 +16,10 @@ import (
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Charger	"returns a sucess"
-// @Router			/charger [post]
-func CreateChargerHandler(c *gin.Context) {
+// @Router			/chargerpoint [post]
+func CreateChargerPointHandler(c *gin.Context) {
 	var (
-		chargerPoint dto.Charger
+		chargerPoint dto.ChargerPoint
 	)
 
 	err := c.BindJSON(&chargerPoint)
@@ -30,8 +30,7 @@ func CreateChargerHandler(c *gin.Context) {
 		return
 	}
 
-	err = charger.ChargerControllerObj.CreateCharger(chargerPoint)
-
+	err = charger.ChargerControllerObj.CreateChargerPoint(chargerPoint)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Charger")
@@ -43,36 +42,16 @@ func CreateChargerHandler(c *gin.Context) {
 	return
 }
 
-// @Summary		Get All Charger
-// @Description	get Charger by provider id or charger id
-// @Tags			Charger
-// @Accept			json
-// @Produce		json
-// @Success		200	{object}	[]dto.ChargerDetails	"returns a list of Charger Details object"
-// @Router			/charger [get]
-func GetAllChargerDetailsHandler(c *gin.Context) {
-	chargerResult, err := charger.ChargerControllerObj.GetAllCharger()
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting all charger")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
-		return
-	}
-
-	c.JSON(http.StatusOK, chargerResult)
-	return
-}
-
-// @Summary		Update Charger by id
-// @Description	Update Charger by provider
+// @Summary		Update charging point by Id
+// @Description	Update charging point by Id
 // @Tags			Charger
 // @Accept			json
 // @Produce		json
 // @Success		200	{object}	dto.Charger	"returns a Charger object"
-// @Router			/charger [patch]
-func UpdateChargerHandler(c *gin.Context) {
+// @Router			/charger/{charger_id} [patch]
+func UpdateChargerPointHandler(c *gin.Context) {
 	var (
-		chargerRequest dto.Charger
+		chargerRequest dto.ChargerPoint
 	)
 
 	err := c.BindJSON(&chargerRequest)
@@ -82,7 +61,7 @@ func UpdateChargerHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
-	err = charger.ChargerControllerObj.UpdateCharger(chargerRequest)
+	err = charger.ChargerControllerObj.UpdateChargerPoint(chargerRequest)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("Charger", chargerRequest).WithField("err", err).Error("error update Charger")

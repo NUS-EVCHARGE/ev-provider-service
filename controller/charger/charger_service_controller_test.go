@@ -1,100 +1,161 @@
 package charger
 
 import (
+	"testing"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/stretchr/testify/assert"
-	"testing"
+)
+
+var (
+	mockProvider = dto.Provider{
+		ID:          0,
+		CompanyName: "testing",
+	}
+	mockChargerPoint = dto.ChargerPoint{
+		ID:           0,
+		Lat:          121324.21412,
+		Lng:          12.15251,
+		Address:      "test address",
+		ProviderId:   0,
+		ProviderName: "testing",
+	}
+	mockChargerList = []dto.Charger{
+		{
+			ID:      0,
+			UID:     "wleihflwe",
+			Status:  "available",
+			Details: `{"charger_type":"AC","rates":"$0.123"}`,
+		},
+		{
+			ID:      1,
+			UID:     "ewleihflwe",
+			Status:  "available",
+			Details: `{"charger_type":"DC","rates":"$0.123"}`,
+		},
+	}
 )
 
 func setup() {
 	NewChargerController()
-}
-func TestCreateChargerSuccess(t *testing.T) {
-	setup()
-
-	var (
-		provider = dto.Provider{
-			ID:          0,
-			UserEmail:   "example@example.com",
-			CompanyName: "example",
-			Description: "example",
-			Status:      "",
-		}
-		actualCharger = dto.Charger{
-			ID:         0,
-			ProviderId: 0,
-			RatesId:    0,
-			Lat:        0,
-			Lng:        0,
-			Status:     "",
-		}
-	)
-
-	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{})
-
-	err := ChargerControllerObj.CreateCharger(&actualCharger)
-	assert.Nil(t, err)
-
-	expectedCharger, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
-	assert.Nil(t, err)
-	assert.Equal(t, actualCharger, expectedCharger[0])
+	dao.Db = dao.NewMockDatabase([]dto.Provider{
+		mockProvider,
+	}, []dto.ChargerPoint{
+		mockChargerPoint,
+	}, mockChargerList)
 }
 
-func TestDeleteChargerSuccess(t *testing.T) {
+func TestCreateChargingPointSucess(t *testing.T) {
 	setup()
-	var (
-		provider = dto.Provider{
-			ID:          0,
-			UserEmail:   "example@example.com",
-			CompanyName: "example",
-			Description: "example",
-			Status:      "",
-		}
-		actualCharger = dto.Charger{
-			ID:         0,
-			ProviderId: 0,
-			RatesId:    0,
-			Lat:        0,
-			Lng:        0,
-			Status:     "",
-		}
-	)
-	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{actualCharger})
-
-	err := ChargerControllerObj.DeleteCharger(actualCharger.ID)
+	newChargingPoint := dto.ChargerPoint{
+		ID:           1,
+		Lat:          121324.21412,
+		Lng:          12.15251,
+		Address:      "new address",
+		ProviderId:   0,
+		ProviderName: "testing",
+	}
+	expectedChargerDetails := []dto.ChargerFullDetails{
+		{
+			ProviderName: mockProvider.CompanyName,
+			Lat:          mockChargerPoint.Lat,
+			Lng:          mockChargerPoint.Lng,
+			Address:      mockChargerPoint.Address,
+			ChargerList:  mockChargerList,
+		},
+		{
+			ProviderName: mockProvider.CompanyName,
+			Lat:          121324.21412,
+			Lng:          12.15251,
+			Address:      "new address",
+		},
+	}
+	err := ChargerControllerObj.CreateChargerPoint(newChargingPoint)
 	assert.Nil(t, err)
-
-	chargerList, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
+	chargerDetails, err := ChargerControllerObj.GetAllCharger()
 	assert.Nil(t, err)
-	assert.Equal(t, len(chargerList), 0)
+	assert.Equal(t, chargerDetails, expectedChargerDetails)
 }
 
-func TestUpdateChargerSuccess(t *testing.T) {
+func TestCreateChargerSucess(t *testing.T) {
 	setup()
-	var (
-		provider = dto.Provider{
-			ID:          0,
-			UserEmail:   "example@example.com",
-			CompanyName: "example",
-			Description: "example",
-			Status:      "",
-		}
-		actualCharger = dto.Charger{
-			ID:         0,
-			ProviderId: 0,
-			RatesId:    0,
-			Lat:        0,
-			Lng:        0,
-			Status:     "",
-		}
-	)
-	dao.Db = dao.NewMockDatabase([]dto.Provider{}, []dto.Rates{}, []dto.Charger{actualCharger})
-	actualCharger.RatesId = 100
-	err := ChargerControllerObj.UpdateCharger(actualCharger)
+	newCharger := dto.Charger{
+		ID:      2,
+		UID:     "eewfwefwleihflwe",
+		Status:  "available",
+		Details: `{"charger_type":"DC","rates":"$0.123"}`,
+	}
+	expectedChargerDetails := []dto.ChargerFullDetails{
+		{
+			ProviderName: mockProvider.CompanyName,
+			Lat:          mockChargerPoint.Lat,
+			Lng:          mockChargerPoint.Lng,
+			Address:      mockChargerPoint.Address,
+			ChargerList:  append(mockChargerList, newCharger),
+		},
+	}
+	err := ChargerControllerObj.CreateCharger(newCharger)
 	assert.Nil(t, err)
+	chargerDetails, err := ChargerControllerObj.GetAllCharger()
+	assert.Nil(t, err)
+	assert.Equal(t, chargerDetails, expectedChargerDetails)
+}
 
-	chargerList, err := ChargerControllerObj.GetChargerByProvider(provider.ID)
+func TestUpdateChargerSucess(t *testing.T) {
+	setup()
+	newCharger := dto.Charger{
+		ID:      1,
+		UID:     "eewfwefwleihflwe",
+		Status:  "available",
+		Details: `{"charger_type":"DC","rates":"$0.123"}`,
+	}
+	newChargerList := mockChargerList
+	newChargerList[1] = newCharger
+
+	expectedChargerDetails := []dto.ChargerFullDetails{
+		{
+			ProviderName: mockProvider.CompanyName,
+			Lat:          mockChargerPoint.Lat,
+			Lng:          mockChargerPoint.Lng,
+			Address:      mockChargerPoint.Address,
+			ChargerList:  newChargerList,
+		},
+	}
+
+	err := ChargerControllerObj.UpdateCharger(newCharger)
 	assert.Nil(t, err)
-	assert.Equal(t, actualCharger, chargerList[0])
+	chargerDetails, err := ChargerControllerObj.GetAllCharger()
+	assert.Nil(t, err)
+	assert.Equal(t, chargerDetails, expectedChargerDetails)
+}
+
+func TestUpdateChargerPointSucess(t *testing.T) {
+	setup()
+	newChargingPoint := dto.ChargerPoint{
+		ID:           0,
+		Lat:          121324.21412,
+		Lng:          12.15251,
+		Address:      "new address",
+		ProviderId:   0,
+		ProviderName: "testing",
+		Status:       "available",
+	}
+
+	expectedChargerDetails := []dto.ChargerFullDetails{
+		{
+			ProviderName: mockProvider.CompanyName,
+			Lat:          mockChargerPoint.Lat,
+			Lng:          mockChargerPoint.Lng,
+			Address:      "new address",
+			ChargerList:  mockChargerList,
+			Status:       newChargingPoint.Status,
+		},
+	}
+
+	err := ChargerControllerObj.UpdateChargerPoint(newChargingPoint)
+	assert.Nil(t, err)
+	chargerDetails, err := ChargerControllerObj.GetAllCharger()
+	assert.Nil(t, err)
+	assert.Equal(t, chargerDetails, expectedChargerDetails)
 }
