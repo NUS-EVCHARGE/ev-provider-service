@@ -10,20 +10,19 @@ type Database interface {
 	CreateProviderEntry(Provider dto.Provider) (dto.Provider, error)
 	UpdateProviderEntry(Provider dto.Provider) error
 	DeleteProviderEntry(Provider dto.Provider) error
-	GetAllProviderEntry(email string) (dto.Provider, error)
+	GetProviderEntry(email string) (dto.Provider, error)
+	GetAllProviderEntry() ([]dto.Provider, error)
 
-	CreateChargerEntry(Charger *dto.Charger) error
-	UpdateChargerEntry(Charger dto.Charger) error
-	DeleteChargerEntry(Charger dto.Charger) error
-	GetChargerEntryByProvider(providerId uint) ([]dto.Charger, error)
-	GetAllCharger() ([]dto.Charger, error)
+	CreateChargerPointEntry(chargerPoint dto.ChargerPoint) error
+	GetChargerPointEntryByID(chargerId uint) (dto.ChargerPoint, error)
+	GetChargerPointEntryByProviderID(providerId uint) ([]dto.ChargerPoint, error)
+	GetAllChargerPointEntry() ([]dto.ChargerPoint, error)
+	UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) error
+
+	CreateChargerEntry(charger dto.Charger) error
+	GetChargerByChargerPointId(chargerPointId uint) ([]dto.Charger, error)
 	GetChargerById(chargerId uint) (dto.Charger, error)
-
-	CreateRatesEntry(Rates *dto.Rates) error
-	UpdateRatesEntry(Rates dto.Rates) error
-	DeleteRatesEntry(Rates dto.Rates) error
-	GetRatesByProviderId(providerId uint) ([]dto.Rates, error)
-	GetRatesByRateId(rateId uint) (dto.Rates, error)
+	UpdateChargerEntry(charger dto.Charger) error
 }
 
 var (

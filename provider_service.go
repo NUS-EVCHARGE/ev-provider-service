@@ -7,7 +7,6 @@ import (
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
-	Rate "github.com/NUS-EVCHARGE/ev-provider-service/controller/rates"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
@@ -44,12 +43,7 @@ func main() {
 
 	var hostname string
 	user, pass := helper.GetDatabaseSecrets()
-
-	if pass != "" {
-		hostname = user + ":" + pass + "@tcp(evapp-db.c3i0qsy82gn1.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
-	} else {
-		hostname = configObj.Dsn // localhost
-	}
+	hostname = user + ":" + pass + "@tcp(evapp-db.c3i0qsy82gn1.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 
 	// init db
 	err = dao.InitDB(hostname)
@@ -60,7 +54,6 @@ func main() {
 
 	provider.NewProviderController()
 	charger.NewChargerController()
-	Rate.NewRateController()
 	InitHttpServer(configObj.HttpAddress)
 }
 
@@ -96,25 +89,19 @@ func registerHandler() {
 
 	// api versioning
 	v1 := r.Group("/api/v1")
+
+	// provider handler
 	v1.POST("/provider", handler.CreateProviderHandler)
-	v1.GET("/provider", handler.GetProviderHandler)
+	v1.GET("/provider/:provider_email", handler.GetProviderHandler)
 	v1.PATCH("/provider", handler.UpdateProviderHandler)
 	v1.DELETE("/provider/:provider_id", handler.DeleteProviderHandler)
 
-	v1.POST("/provider/:provider_id/charger", handler.CreateChargerHandler)
-	v1.GET("/provider/:provider_id/charger", handler.GetChargerHandler)
-	v1.GET("/provider/charger/:charger_id", handler.GetChargerHandler)
-	v1.PATCH("/provider/:provider_id/charger", handler.UpdateChargerHandler)
-	v1.DELETE("/provider/:provider_id/charger/:charger_id", handler.DeleteChargerHandler)
+	// charger handler
+	v1.POST("/charger", handler.CreateChargerHandler)
+	v1.GET("/charger", handler.GetAllChargerDetailsHandler)
+	v1.PATCH("/charger", handler.UpdateChargerHandler)
 
-	v1.POST("/provider/:provider_id/chargerandrate", handler.CreateChargerAndRateHandlerByProviderId)
-	v1.GET("/provider/:provider_id/chargerandrate", handler.GetChargerAndRateHandler)
-	v1.PATCH("/provider/:provider_id/chargerandrate", handler.UpdateChargerAndRateHandlerByProviderId)
-
-	v1.POST("/provider/:provider_id/rates", handler.CreateRatesHandler)
-	v1.GET("/provider/:provider_id/rates", handler.GetRatesHandler)
-	v1.GET("/provider/rates/:rates_id", handler.GetRatesHandler)
-	v1.PATCH("/provider/:provider_id/rates", handler.UpdateRatesHandler)
-	v1.DELETE("/provider/:provider_id/rates/:rates_id", handler.DeleteRatesHandler)
-	v1.GET("/charger", handler.GetAllChargerHandler)
+	// charger point handler
+	v1.POST("/chargerpoint", handler.CreateChargerPointHandler)
+	v1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler)
 }

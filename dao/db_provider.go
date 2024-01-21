@@ -2,6 +2,7 @@ package dao
 
 import (
 	"fmt"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
@@ -26,9 +27,16 @@ func (d *dbImpl) DeleteProviderEntry(Provider dto.Provider) error {
 	return results.Error
 }
 
-func (d *dbImpl) GetAllProviderEntry(email string) (dto.Provider, error) {
+func (d *dbImpl) GetProviderEntry(email string) (dto.Provider, error) {
 	var existingProvider dto.Provider
 
 	results := d.DbController.First(&existingProvider, "user_email = ?", email)
+	return existingProvider, results.Error
+}
+
+func (d *dbImpl) GetAllProviderEntry() ([]dto.Provider, error) {
+	var existingProvider []dto.Provider
+
+	results := d.DbController.Find(&existingProvider)
 	return existingProvider, results.Error
 }
