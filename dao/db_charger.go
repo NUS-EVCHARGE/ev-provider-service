@@ -50,7 +50,7 @@ func (d *dbImpl) CreateChargerEntry(charger dto.Charger) error {
 func (d *dbImpl) GetChargerByChargerPointId(chargerPointId uint) ([]dto.Charger, error) {
 	var existingCharger []dto.Charger
 
-	results := d.DbController.Find(&existingCharger, "chager_point_id = ?", chargerPointId)
+	results := d.DbController.Find(&existingCharger, "charger_point_id = ?", chargerPointId)
 	return existingCharger, results.Error
 }
 

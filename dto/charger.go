@@ -16,7 +16,7 @@ type Charger struct {
 	ChargerPointID uint   `gorm:"column:charger_point_id" json:"charger_point_id"`
 	UID            string `gorm:"column:uid" json:"uid"`
 	Status         string `gorm:"column:status" json:"status"`
-	Details        string `gorm:"column:charger_type" json:"details"` // json struct
+	Details        string `gorm:"column:details" json:"details"` // json struct
 }
 
 type ChargerDetails struct {

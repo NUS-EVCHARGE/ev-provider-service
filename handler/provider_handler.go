@@ -26,7 +26,6 @@ func GetBookingHealthCheckHandler(c *gin.Context) {
 // @Router			/provider [post]
 func CreateProviderHandler(c *gin.Context) {
 	var (
-		user     userDto.User
 		Provider dto.Provider
 	)
 
@@ -37,7 +36,8 @@ func CreateProviderHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
-	Provider.UserEmail = user.Email
+	// TODO: status management
+	Provider.Status = "available"
 	Provider, err = provider.ProviderControllerObj.CreateProvider(Provider)
 
 	if err != nil {
