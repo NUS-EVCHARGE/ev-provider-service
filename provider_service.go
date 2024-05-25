@@ -43,7 +43,7 @@ func main() {
 
 	var hostname string
 	user, pass := helper.GetDatabaseSecrets()
-	hostname = user + ":" + pass + "@tcp(evapp-db.c3i0qsy82gn1.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 
 	// init db
 	err = dao.InitDB(hostname)
