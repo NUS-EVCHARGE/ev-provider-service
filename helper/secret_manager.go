@@ -21,7 +21,7 @@ type DatabaseSecret struct {
 }
 
 func GetDatabaseSecrets() (string, string) {
-	db := retrieveSecretFromSecretManager("evapp-db-secret")
+	db := retrieveSecretFromSecretManager("rds!db-7e89b549-42c3-48b5-b8b5-6aed854ff555")
 	return db.Username, db.Password
 }
 
