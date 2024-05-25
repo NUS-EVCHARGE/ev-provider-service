@@ -14,8 +14,8 @@
       ],
       "secrets": [
         {
-          "name": "evapp-db-secret",
-          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:654654201746:secret:evapp-db-secret-1IkkHk"
+          "name": "rds!db-7e89b549-42c3-48b5-b8b5-6aed854ff555",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:471112786163:secret:rds!db-7e89b549-42c3-48b5-b8b5-6aed854ff555-aqcDph"
         }
       ],
       "essential": true,
@@ -37,8 +37,8 @@
     }
   ],
   "family": "ev-provider-service",
-  "taskRoleArn": "arn:aws:iam::654654201746:role/ExecutionTaskPolicy",
-  "executionRoleArn": "arn:aws:iam::654654201746:role/ExecutionTaskPolicy",
+  "taskRoleArn": "arn:aws:iam::471112786163:role/ecsTaskExecutionRole",
+  "executionRoleArn": "arn:aws:iam::471112786163:role/ecsTaskExecutionRole",
   "networkMode": "bridge",
   "revision": 1,
   "volumes": [],
