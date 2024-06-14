@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
 	"time"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
@@ -10,7 +11,6 @@ import (
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
-	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -42,8 +42,9 @@ func main() {
 	}
 
 	var hostname string
-	user, pass := helper.GetDatabaseSecrets()
-	hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	//user, pass := helper.GetDatabaseSecrets()
+	//hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	hostname = configObj.Dsn
 
 	// init db
 	err = dao.InitDB(hostname)
@@ -54,6 +55,7 @@ func main() {
 
 	provider.NewProviderController()
 	charger.NewChargerController()
+	authentication.NewAuthenticationController()
 	InitHttpServer(configObj.HttpAddress)
 }
 
@@ -104,4 +106,10 @@ func registerHandler() {
 	// charger point handler
 	v1.POST("/chargerpoint", handler.CreateChargerPointHandler)
 	v1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler)
+
+	// authentication handler
+	v1.POST("/login", handler.LoginHandler)
+	v1.POST("/signup", handler.SignUpHandler)
+	v1.POST("/confirm", handler.ConfirmUserHandler)
+	v1.POST("/resend", handler.ResendConfirmationHandler)
 }
