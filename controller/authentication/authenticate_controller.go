@@ -60,7 +60,7 @@ func (a AuthenticationControllerImpl) LoginUser(loginCredential dto.Credentials)
 	// Handle MFA setup and challenges
 	if authResp.ChallengeName != nil && *authResp.ChallengeName != "" {
 		fmt.Println("Challenge required:", authResp.ChallengeName)
-		logrus.WithField("login", login).Info("User %s authentication failed %s\n", loginCredential.Email)
+		logrus.WithField("login", login).Info("User authentication failed \n", loginCredential.Email)
 		login.Status = *authResp.ChallengeName
 		//handleChallenge(cognitoClient, clientID, clientSecret, loginCredential.Email, *authResp.Session, *authResp.ChallengeName)
 	} else {
@@ -71,7 +71,7 @@ func (a AuthenticationControllerImpl) LoginUser(loginCredential dto.Credentials)
 		login.Status = "success"
 	}
 
-	logrus.WithField("login", login).Info("User %s authenticated successfully %s\n", loginCredential.Email)
+	logrus.WithField("login", login).Info("User authenticated successfully \n", loginCredential.Email)
 	return login, nil
 }
 
