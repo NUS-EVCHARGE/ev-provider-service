@@ -22,13 +22,13 @@ func LoginHandler(c *gin.Context) {
 		return
 	}
 
-	err = authentication.AuthenticationControllerObj.LoginUser(credentials)
+	resp, err := authentication.AuthenticationControllerObj.LoginUser(credentials)
 	if err != nil {
 		logrus.WithField("err", err).Error("error authenticating user")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
-	c.JSON(http.StatusOK, CreateResponse("User authenticated successfully"))
+	c.JSON(http.StatusOK, resp)
 	return
 }
 
@@ -76,19 +76,19 @@ func ConfirmUserHandler(c *gin.Context) {
 	return
 }
 
-func ResendConfirmationHandler(c *gin.Context) {
+func ResendChallengeCodeHandler(c *gin.Context) {
 	var (
-		email string
+		resendRequest dto.SignUpResendRequest
 	)
 
-	err := c.BindJSON(&email)
+	err := c.BindJSON(&resendRequest)
 	if err != nil {
 		logrus.WithField("err", err).Error("error params")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
 
-	err = authentication.AuthenticationControllerObj.ResendChallengeCode(email)
+	err = authentication.AuthenticationControllerObj.ResendChallengeCode(resendRequest)
 	if err != nil {
 		logrus.WithField("err", err).Error("error resending confirmation")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))

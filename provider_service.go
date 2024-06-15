@@ -111,5 +111,5 @@ func registerHandler() {
 	v1.POST("/login", handler.LoginHandler)
 	v1.POST("/signup", handler.SignUpHandler)
 	v1.POST("/confirm", handler.ConfirmUserHandler)
-	v1.POST("/resend", handler.ResendConfirmationHandler)
+	v1.POST("/resend", handler.ResendChallengeCodeHandler)
 }
