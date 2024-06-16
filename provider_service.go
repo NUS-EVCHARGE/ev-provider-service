@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
+	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"time"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
@@ -42,9 +43,9 @@ func main() {
 	}
 
 	var hostname string
-	//user, pass := helper.GetDatabaseSecrets()
-	//hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
-	hostname = configObj.Dsn
+	user, pass := helper.GetDatabaseSecrets()
+	hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	//hostname = configObj.Dsn
 
 	// init db
 	err = dao.InitDB(hostname)

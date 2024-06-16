@@ -12,6 +12,7 @@ import (
 	"github.com/sirupsen/logrus"
 	_ "golang.org/x/net/context"
 	"log"
+	"os"
 )
 
 type AuthenticationController interface {
@@ -29,8 +30,8 @@ type AuthenticationControllerImpl struct {
 var (
 	awsRegion = "ap-southeast-1" // Your AWS Region
 	//userPoolID                  = "ap-southeast-1_wnUcfMgqN"  // Your Cognito User Pool ID
-	clientID                    = "og5uq3m2bvhfbghf3jd2q14jm" // Your Cognito App Client ID
-	clientSecret                = "16q37emcuik0cbfffo534lsqo2kck4fisjp7gnkpmbil2br6bho"
+	clientID                    = os.Getenv("CONGITO_CLIENTID") // Your Cognito App Client ID
+	clientSecret                = os.Getenv("CONGNITO_CLIENT_SECRET")
 	AuthenticationControllerObj AuthenticationController
 	cognitoClient               = setupCognitoClient()
 )
