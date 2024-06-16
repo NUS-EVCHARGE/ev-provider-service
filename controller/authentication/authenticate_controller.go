@@ -19,6 +19,8 @@ type AuthenticationController interface {
 	LoginUser(loginCredential dto.Credentials) (*dto.LoginResponse, error)
 	ConfirmUser(userInfo dto.ConfirmUser) error
 	ResendChallengeCode(resendRequest dto.SignUpResendRequest) error
+	LogoutUser(accessToken string) error
+	GetUserInfo(accessToken string) error
 }
 
 type AuthenticationControllerImpl struct {
@@ -75,80 +77,34 @@ func (a AuthenticationControllerImpl) LoginUser(loginCredential dto.Credentials)
 	return login, nil
 }
 
-//func handleChallenge(client *cognitoidentityprovider, clientID, clientSecret, userName, session, challengeName string) {
-//	switch challengeName {
-//	case "SMS_MFA":
-//		var mfaCode string
-//		fmt.Print("Enter SMS MFA code: ")
-//		//fmt.Scan(&mfaCode)
-//
-//		respondToChallenge(client, clientID, clientSecret, userName, session, challengeName, "SMS_MFA_CODE", mfaCode)
-//	case "SOFTWARE_TOKEN_MFA":
-//		var mfaCode string
-//		fmt.Print("Enter TOTP MFA code: ")
-//		//fmt.Scan(&mfaCode)
-//
-//		respondToChallenge(client, clientID, clientSecret, userName, session, challengeName, "SOFTWARE_TOKEN_MFA_CODE", mfaCode)
-//	case "MFA_SETUP":
-//		setupMFA(client, clientID, clientSecret, userName, session)
-//	default:
-//		fmt.Println("Unknown challenge:", challengeName)
-//	}
-//}
-//
-//func respondToChallenge(client *cognitoidentityprovider.Client, clientID, clientSecret, userName, session, challengeName, mfaType, mfaCode string) {
-//	input := &cognitoidentityprovider.RespondToAuthChallengeInput{
-//		ChallengeName: types.ChallengeNameType(challengeName),
-//		ClientId:      &clientID,
-//		Session:       &session,
-//		ChallengeResponses: map[string]string{
-//			"USERNAME":    userName,
-//			"SECRET_HASH": generateSecretHash(clientSecret, userName, clientID),
-//			mfaType:       mfaCode,
-//		},
-//	}
-//
-//	resp, err := client.RespondToAuthChallenge(context.TODO(), input)
-//	if err != nil {
-//		log.Fatalf("Error responding to challenge: %v", err)
-//	}
-//
-//	fmt.Println("Authentication successful:", resp.AuthenticationResult)
-//}
-//
-//func setupMFA(client *cognitoidentityprovider.Client, clientID, clientSecret, userName, session string) {
-//	input := &cognitoidentityprovider.AssociateSoftwareTokenInput{
-//		Session: &session,
-//	}
-//
-//	resp, err := client.AssociateSoftwareToken(context.TODO(), input)
-//	if err != nil {
-//		log.Fatalf("Error setting up MFA: %v", err)
-//	}
-//
-//	fmt.Printf("Set up MFA with TOTP: %v\n", resp)
-//
-//	var mfaCode string
-//	fmt.Print("Enter the TOTP code from your authenticator app: ")
-//	fmt.Scan(&mfaCode)
-//
-//	verifyMFA(client, clientID, clientSecret, userName, session, resp.SecretCode, mfaCode)
-//}
-//
-//func verifyMFA(client *cognitoidentityprovider.Client, clientID, clientSecret, userName, session, secretCode, mfaCode string) {
-//	input := &cognitoidentityprovider.VerifySoftwareTokenInput{
-//		AccessToken:        &session,
-//		FriendlyDeviceName: aws.String("MyDevice"),
-//		UserCode:           &mfaCode,
-//	}
-//
-//	resp, err := client.VerifySoftwareToken(context.TODO(), input)
-//	if err != nil {
-//		log.Fatalf("Error verifying MFA: %v", err)
-//	}
-//
-//	fmt.Printf("MFA verified: %v\n", resp)
-//}
+func (a AuthenticationControllerImpl) LogoutUser(accessToken string) error {
+	input := &cognitoidentityprovider.GlobalSignOutInput{
+		AccessToken: aws.String(accessToken),
+	}
+
+	_, err := cognitoClient.GlobalSignOut(input)
+	if err != nil {
+		return err
+	}
+
+	fmt.Printf("User %s logged out successfully\n", accessToken)
+	return nil
+}
+
+// GetUserIno
+func (a AuthenticationControllerImpl) GetUserInfo(accessToken string) error {
+	input := &cognitoidentityprovider.GetUserInput{
+		AccessToken: aws.String(accessToken),
+	}
+
+	_, err := cognitoClient.GetUser(input)
+	if err != nil {
+		return err
+	}
+
+	logrus.WithField("accessToken", accessToken).Info("User authenticated successfully")
+	return nil
+}
 
 func (a AuthenticationControllerImpl) RegisterUser(loginCredential dto.Credentials) error {
 

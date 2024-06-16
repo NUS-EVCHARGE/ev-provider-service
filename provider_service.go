@@ -91,25 +91,32 @@ func registerHandler() {
 
 	// api versioning
 	v1 := r.Group("/api/v1")
+	{
+		v1.POST("/login", handler.LoginHandler)
+		v1.POST("/signup", handler.SignUpHandler)
+		v1.POST("/confirm", handler.ConfirmUserHandler)
+		v1.POST("/resend", handler.ResendChallengeCodeHandler)
+	}
 
-	// provider handler
-	v1.POST("/provider", handler.CreateProviderHandler)
-	v1.GET("/provider/:provider_email", handler.GetProviderHandler)
-	v1.PATCH("/provider", handler.UpdateProviderHandler)
-	v1.DELETE("/provider/:provider_id", handler.DeleteProviderHandler)
+	protectedV1 := r.Group("/api/v1")
+	protectedV1.Use(handler.AuthMiddlewareHandler)
+	{
+		// provider handler
+		protectedV1.POST("/provider", handler.CreateProviderHandler)
+		protectedV1.GET("/provider/:provider_email", handler.GetProviderHandler)
+		protectedV1.PATCH("/provider", handler.UpdateProviderHandler)
+		protectedV1.DELETE("/provider/:provider_id", handler.DeleteProviderHandler)
 
-	// charger handler
-	v1.POST("/charger", handler.CreateChargerHandler)
-	v1.GET("/charger", handler.GetAllChargerDetailsHandler)
-	v1.PATCH("/charger", handler.UpdateChargerHandler)
+		// charger handler
+		protectedV1.POST("/charger", handler.CreateChargerHandler)
+		protectedV1.GET("/charger", handler.GetAllChargerDetailsHandler)
+		protectedV1.PATCH("/charger", handler.UpdateChargerHandler)
 
-	// charger point handler
-	v1.POST("/chargerpoint", handler.CreateChargerPointHandler)
-	v1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler)
+		// charger point handler
+		protectedV1.POST("/chargerpoint", handler.CreateChargerPointHandler)
+		protectedV1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler)
 
-	// authentication handler
-	v1.POST("/login", handler.LoginHandler)
-	v1.POST("/signup", handler.SignUpHandler)
-	v1.POST("/confirm", handler.ConfirmUserHandler)
-	v1.POST("/resend", handler.ResendChallengeCodeHandler)
+		// authentication handler
+		protectedV1.POST("/logout", handler.LogoutUserHandler)
+	}
 }

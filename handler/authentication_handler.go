@@ -97,3 +97,28 @@ func ResendChallengeCodeHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, CreateResponse("Confirmation code sent successfully"))
 	return
 }
+
+func LogoutUserHandler(c *gin.Context) {
+	// Retrieve the access token from the Authorization header
+	accessToken := c.GetHeader("Authorization")
+	if accessToken == "" {
+		logrus.Error("Authorization header is missing")
+		c.JSON(http.StatusBadRequest, CreateResponse("Authorization header is missing"))
+		return
+	}
+
+	// Optional: remove "Bearer " prefix if it exists
+	const bearerPrefix = "Bearer "
+	if len(accessToken) > len(bearerPrefix) && accessToken[:len(bearerPrefix)] == bearerPrefix {
+		accessToken = accessToken[len(bearerPrefix):]
+	}
+
+	err := authentication.AuthenticationControllerObj.LogoutUser(accessToken)
+	if err != nil {
+		logrus.WithField("err", err).Error("error logging out user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+	c.JSON(http.StatusOK, CreateResponse("User logged out successfully"))
+	return
+}
