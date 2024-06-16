@@ -39,6 +39,6 @@ func AuthMiddlewareHandler(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	c.JSON(http.StatusOK, CreateResponse("Token is valid"))
+
 	return
 }
