@@ -7,7 +7,7 @@
         {
           "name": "ev-provider-service-8080-tcp",
           "containerPort": 8080,
-          "hostPort": 8080,
+          "hostPort": 80,
           "protocol": "tcp",
           "appProtocol": "http"
         }
