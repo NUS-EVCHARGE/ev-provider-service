@@ -30,8 +30,8 @@ type AuthenticationControllerImpl struct {
 var (
 	awsRegion = "ap-southeast-1" // Your AWS Region
 	//userPoolID                  = "ap-southeast-1_wnUcfMgqN"  // Your Cognito User Pool ID
-	clientID                    = os.Getenv("CONGITO_CLIENTID") // Your Cognito App Client ID
-	clientSecret                = os.Getenv("CONGNITO_CLIENT_SECRET")
+	clientID                    = os.Getenv("COGNITO_CLIENT") // Your Cognito App Client ID
+	clientSecret                = os.Getenv("COGNITO_CLIENT_SECRET")
 	AuthenticationControllerObj AuthenticationController
 	cognitoClient               = setupCognitoClient()
 )
