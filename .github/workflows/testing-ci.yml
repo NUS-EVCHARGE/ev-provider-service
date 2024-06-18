@@ -13,7 +13,15 @@ jobs:
       - name: Build
         run: go build -v ./...
       - name: Test
-        run: go test -cover -v ./...
+        run: |
+          go test ./... -v -coverpkg=./... -coverprofile=coverage.out
+          pwd
+          ls -al
+      - uses: actions/upload-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+          retention-days: 5
   sonarcloud:
     needs: unit-test
     name: SonarCloud
