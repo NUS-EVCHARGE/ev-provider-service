@@ -1,3 +1,6 @@
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=NUS-EVCHARGE_ev-provider-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=NUS-EVCHARGE_ev-provider-service)
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=NUS-EVCHARGE_ev-provider-service)](https://sonarcloud.io/summary/new_code?id=NUS-EVCHARGE_ev-provider-service)
+
 # Legacy (do not follow)
 
 #Steps
