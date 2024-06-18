@@ -15,6 +15,7 @@ jobs:
       - name: Test
         run: go test -cover -v ./...
   sonarcloud:
+    needs: unit-test
     name: SonarCloud
     runs-on: ubuntu-latest
     steps:
@@ -26,3 +27,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  Dynamic-Analysis-OWASP-ZAP: #TODO: Move to a separate repo to scan remote URLs
+    permissions: write-all
+    needs: unit-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@master
+        with:
+          name: artifact
+          path: ${{ github.workspace }}/
+
+      - name: run docker image
+        run: docker run -d -p 8080:8080 $(docker build -q -f Dockerfile .)
+
+      - name: OWASP ZAP
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          docker_name: 'owasp/zap2docker-stable'
+          # Target URL
+          target: "http://localhost:8080"
+          fail_action: false
+          allow_issue_writing: true
+          issue_title: Security Tests
