@@ -2,9 +2,10 @@ package main
 
 import (
 	"flag"
+	"time"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
 	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
-	"time"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
@@ -69,7 +70,7 @@ func InitHttpServer(httpAddress string) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*", "http://localhost:3000"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
-		AllowHeaders:     []string{"Origin", "Content-Length", "Content-Type", "authentication"},
+		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Origin", "Content-Length", "Content-Type", "authentication", "Access-Control-Request-Method", "Access-Control-Request-Headers"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
