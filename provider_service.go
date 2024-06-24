@@ -70,7 +70,7 @@ func InitHttpServer(httpAddress string) {
 	r.Use(cors.New(cors.Config{
 		AllowOrigins:     []string{"*", "http://localhost:3000"},
 		AllowMethods:     []string{"PUT", "PATCH", "POST", "GET", "DELETE", "OPTIONS", "HEAD"},
-		AllowHeaders:     []string{"Access-Control-Allow-Headers", "Origin", "Content-Length", "Content-Type", "authentication", "Access-Control-Request-Method", "Access-Control-Request-Headers"},
+		AllowHeaders:     []string{"authorization", "access-control-allow-origin", "Access-Control-Allow-Headers", "Origin", "Content-Length", "Content-Type", "authentication", "Access-Control-Request-Method", "Access-Control-Request-Headers"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,

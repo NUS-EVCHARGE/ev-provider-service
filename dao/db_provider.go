@@ -34,6 +34,13 @@ func (d *dbImpl) GetProviderEntry(email string) (dto.Provider, error) {
 	return existingProvider, results.Error
 }
 
+func (d *dbImpl) GetProviderEntryByCompany(companyName string) (dto.Provider, error) {
+	var existingProvider dto.Provider
+
+	results := d.DbController.Where("company_name = ?", companyName).First(&existingProvider)
+	return existingProvider, results.Error
+}
+
 func (d *dbImpl) GetAllProviderEntry() ([]dto.Provider, error) {
 	var existingProvider []dto.Provider
 

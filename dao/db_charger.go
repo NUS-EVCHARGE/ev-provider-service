@@ -33,12 +33,26 @@ func (d *dbImpl) GetAllChargerPointEntry() ([]dto.ChargerPoint, error) {
 	return existingCharger, results.Error
 }
 
+func (d *dbImpl) GetAllChargerPointEntryByProviderID(providerId int) ([]dto.ChargerPoint, error) {
+	var existingCharger []dto.ChargerPoint
+
+	results := d.DbController.Where("provider_id = ?", providerId).Find(&existingCharger)
+	return existingCharger, results.Error
+}
+
 func (d *dbImpl) UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) error {
 	results := d.DbController.Model(chargerPoint).Updates(chargerPoint)
 	if results.RowsAffected == 0 {
 		return fmt.Errorf("Charger not found")
 	}
 	return results.Error
+}
+
+func (d *dbImpl) GetChargerPointByLocation(providerId int, lat, lng float64) (dto.ChargerPoint, error) {
+	var existingCharger dto.ChargerPoint
+
+	results := d.DbController.Where("lat = ? and lng = ? and provider_id = ?", lat, lng, providerId).Find(&existingCharger)
+	return existingCharger, results.Error
 }
 
 // Charger

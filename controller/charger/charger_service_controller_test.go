@@ -14,12 +14,11 @@ var (
 		CompanyName: "testing",
 	}
 	mockChargerPoint = dto.ChargerPoint{
-		ID:           0,
-		Lat:          121324.21412,
-		Lng:          12.15251,
-		Address:      "test address",
-		ProviderId:   0,
-		ProviderName: "testing",
+		ID:         0,
+		Lat:        121324.21412,
+		Lng:        12.15251,
+		Address:    "test address",
+		ProviderId: 0,
 	}
 	mockChargerList = []dto.Charger{
 		{
@@ -49,26 +48,23 @@ func setup() {
 func TestCreateChargingPointSucess(t *testing.T) {
 	setup()
 	newChargingPoint := dto.ChargerPoint{
-		ID:           1,
-		Lat:          121324.21412,
-		Lng:          12.15251,
-		Address:      "new address",
-		ProviderId:   0,
-		ProviderName: "testing",
+		ID:         1,
+		Lat:        121324.21412,
+		Lng:        12.15251,
+		Address:    "new address",
+		ProviderId: 0,
 	}
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  mockChargerList,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: mockChargerList,
 		},
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          121324.21412,
-			Lng:          12.15251,
-			Address:      "new address",
+			Lat:     121324.21412,
+			Lng:     12.15251,
+			Address: "new address",
 		},
 	}
 	err := ChargerControllerObj.CreateChargerPoint(newChargingPoint)
@@ -88,11 +84,10 @@ func TestCreateChargerSucess(t *testing.T) {
 	}
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  append(mockChargerList, newCharger),
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: append(mockChargerList, newCharger),
 		},
 	}
 	err := ChargerControllerObj.CreateCharger(newCharger)
@@ -115,11 +110,10 @@ func TestUpdateChargerSucess(t *testing.T) {
 
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  newChargerList,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: newChargerList,
 		},
 	}
 
@@ -133,23 +127,19 @@ func TestUpdateChargerSucess(t *testing.T) {
 func TestUpdateChargerPointSucess(t *testing.T) {
 	setup()
 	newChargingPoint := dto.ChargerPoint{
-		ID:           0,
-		Lat:          121324.21412,
-		Lng:          12.15251,
-		Address:      "new address",
-		ProviderId:   0,
-		ProviderName: "testing",
-		Status:       "available",
+		ID:         0,
+		Lat:        121324.21412,
+		Lng:        12.15251,
+		Address:    "new address",
+		ProviderId: 0,
 	}
 
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      "new address",
-			ChargerList:  mockChargerList,
-			Status:       newChargingPoint.Status,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     "new address",
+			ChargerList: mockChargerList,
 		},
 	}
 
