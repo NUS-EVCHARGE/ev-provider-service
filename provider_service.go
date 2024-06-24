@@ -3,13 +3,11 @@ package main
 import (
 	"flag"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
-	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"time"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
-	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
 	"github.com/gin-contrib/cors"
@@ -43,16 +41,16 @@ func main() {
 	}
 
 	var hostname string
-	user, pass := helper.GetDatabaseSecrets()
-	hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
+	////user, pass := helper.GetDatabaseSecrets()
+	////hostname = user + ":" + pass + "@tcp(evapp-db.cbyk62is0npt.ap-southeast-1.rds.amazonaws.com:3306)/evc?parseTime=true&charset=utf8mb4"
 	//hostname = configObj.Dsn
-
-	// init db
-	err = dao.InitDB(hostname)
-	if err != nil {
-		logrus.WithField("config", configObj).Error("failed to connect to database")
-		return
-	}
+	//
+	//// init db
+	//err = dao.InitDB(hostname)
+	//if err != nil {
+	//	logrus.WithField("config", configObj).Error("failed to connect to database")
+	//	return
+	//}
 
 	provider.NewProviderController()
 	charger.NewChargerController()
