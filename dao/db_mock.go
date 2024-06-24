@@ -12,6 +12,21 @@ type mockDbImpl struct {
 	chargerList      []dto.Charger
 }
 
+// GetAllChargerPointEntryByProviderID implements Database.
+func (*mockDbImpl) GetAllChargerPointEntryByProviderID(providerId int) ([]dto.ChargerPoint, error) {
+	panic("unimplemented")
+}
+
+// GetProviderEntryByCompany implements Database.
+func (*mockDbImpl) GetProviderEntryByCompany(companyName string) (dto.Provider, error) {
+	panic("unimplemented")
+}
+
+// GetChargerPointByLocation implements Database.
+func (*mockDbImpl) GetChargerPointByLocation(providerId int, lat float64, lng float64) (dto.ChargerPoint, error) {
+	panic("unimplemented")
+}
+
 func (m *mockDbImpl) GetAllCharger() ([]dto.Charger, error) {
 	return m.chargerList, nil
 }

@@ -1,11 +1,14 @@
 package charger
 
 import (
+	"fmt"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 )
 
 type ChargerController interface {
+	SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error)
 	CreateChargerPoint(charger dto.ChargerPoint) error
 	UpdateChargerPoint(charger dto.ChargerPoint) error
 
@@ -13,6 +16,7 @@ type ChargerController interface {
 	UpdateCharger(charger dto.Charger) error
 
 	GetAllCharger() ([]dto.ChargerFullDetails, error)
+	GetAllChargerByCompanyName(companyName string) ([]dto.ChargerFullDetails, error)
 }
 
 type ChargerImpl struct {
@@ -41,15 +45,77 @@ func (c *ChargerImpl) GetAllCharger() ([]dto.ChargerFullDetails, error) {
 			return chargerFullDetailList, err
 		}
 		chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
-			ProviderName: chargerPoint.ProviderName,
-			Lat:          chargerPoint.Lat,
-			Lng:          chargerPoint.Lng,
-			Address:      chargerPoint.Address,
-			ChargerList:  chargerList,
-			Status:       chargerPoint.Status,
+			Lat:         chargerPoint.Lat,
+			Lng:         chargerPoint.Lng,
+			Address:     chargerPoint.Address,
+			ChargerList: chargerList,
 		})
 	}
 	return chargerFullDetailList, nil
+}
+
+// get all charger by company name
+
+func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.ChargerFullDetails, error) {
+	var (
+		chargerPointList      []dto.ChargerPoint
+		chargerFullDetailList = []dto.ChargerFullDetails{}
+		err                   error
+	)
+
+	/*
+		Get Provider Id
+	*/
+	providerObj, err := dao.Db.GetProviderEntryByCompany(companyName)
+	if err != nil {
+		return chargerFullDetailList, err
+	}
+
+	/*
+		Get all charger points
+		for each charger points, get charger by charging point ids
+	*/
+
+	chargerPointList, err = dao.Db.GetAllChargerPointEntryByProviderID(int(providerObj.ID))
+	if err != nil {
+		return chargerFullDetailList, err
+	}
+
+	for chargerPointIndex, chargerPoint := range chargerPointList {
+		chargerList, err := dao.Db.GetChargerByChargerPointId(chargerPoint.ID)
+		if err != nil {
+			return chargerFullDetailList, err
+		}
+		for chargerIndex, c := range chargerList {
+			chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
+				Key:         fmt.Sprintf("%v_%v", chargerPointIndex, chargerIndex),
+				Lat:         chargerPoint.Lat,
+				Lng:         chargerPoint.Lng,
+				Address:     chargerPoint.Address,
+				UID:         c.UID,
+				ChargerType: c.ChargerType,
+				Status:      c.Status,
+				Details:     c.Details,
+				Power:       c.Power,
+				PowerType:   c.PowerType,
+				ID:          c.ChargerPointID,
+				// ChargerList: chargerList,
+			})
+		}
+
+		// chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
+		// 	Lat:         chargerPoint.Lat,
+		// 	Lng:         chargerPoint.Lng,
+		// 	Address:     chargerPoint.Address,
+		// 	ChargerList: chargerList,
+		// })
+
+	}
+	return chargerFullDetailList, nil
+}
+
+func (c *ChargerImpl) SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error) {
+	return dao.Db.GetChargerPointByLocation(providerId, lat, lng)
 }
 
 // charging point

@@ -56,14 +56,12 @@ func GetSecrets(secretName string) string {
 
 func retrieveSecretFromSecretManager(key string) DatabaseSecret {
 	var database DatabaseSecret
-
-	secret := os.Getenv(key)
-	if secret != "" {
-		// Parse the JSON data into the struct
-		if err := json.Unmarshal([]byte(secret), &database); err != nil {
-			logrus.WithField("decodeSecretManager", database).Error("failed to decode value from secret manager", key)
-			return database
-		}
+	secretString := GetSecrets(key)
+	if secretString == "" {
+		secretString = os.Getenv(key)
+	}
+	if err := json.Unmarshal([]byte(secretString), &database); err != nil {
+		panic("failed to get secret")
 	}
 	return database
 }
