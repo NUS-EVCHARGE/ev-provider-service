@@ -52,6 +52,7 @@ func main() {
 	err = dao.InitDB(hostname)
 	if err != nil {
 		logrus.WithField("config", configObj).Error("failed to connect to database")
+		panic("db failed")
 		return
 	}
 
