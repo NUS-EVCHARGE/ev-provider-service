@@ -56,17 +56,15 @@ func TestCreateChargingPointSucess(t *testing.T) {
 	}
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  mockChargerList,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: mockChargerList,
 		},
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          121324.21412,
-			Lng:          12.15251,
-			Address:      "new address",
+			Lat:     121324.21412,
+			Lng:     12.15251,
+			Address: "new address",
 		},
 	}
 	err := ChargerControllerObj.CreateChargerPoint(newChargingPoint)
@@ -86,11 +84,10 @@ func TestCreateChargerSucess(t *testing.T) {
 	}
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  append(mockChargerList, newCharger),
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: append(mockChargerList, newCharger),
 		},
 	}
 	err := ChargerControllerObj.CreateCharger(newCharger)
@@ -113,11 +110,10 @@ func TestUpdateChargerSucess(t *testing.T) {
 
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      mockChargerPoint.Address,
-			ChargerList:  newChargerList,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     mockChargerPoint.Address,
+			ChargerList: newChargerList,
 		},
 	}
 
@@ -140,11 +136,10 @@ func TestUpdateChargerPointSucess(t *testing.T) {
 
 	expectedChargerDetails := []dto.ChargerFullDetails{
 		{
-			ProviderName: mockProvider.CompanyName,
-			Lat:          mockChargerPoint.Lat,
-			Lng:          mockChargerPoint.Lng,
-			Address:      "new address",
-			ChargerList:  mockChargerList,
+			Lat:         mockChargerPoint.Lat,
+			Lng:         mockChargerPoint.Lng,
+			Address:     "new address",
+			ChargerList: mockChargerList,
 		},
 	}
 
