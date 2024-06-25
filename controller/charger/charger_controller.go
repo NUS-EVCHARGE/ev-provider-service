@@ -9,7 +9,7 @@ import (
 
 type ChargerController interface {
 	SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error)
-	CreateChargerPoint(charger dto.ChargerPoint) error
+	CreateChargerPoint(charger *dto.ChargerPoint) error
 	UpdateChargerPoint(charger dto.ChargerPoint) error
 
 	CreateCharger(charger dto.Charger) error
@@ -119,7 +119,7 @@ func (c *ChargerImpl) SearchChargerPoint(providerId int, lat, lng float64) (dto.
 }
 
 // charging point
-func (c *ChargerImpl) CreateChargerPoint(charger dto.ChargerPoint) error {
+func (c *ChargerImpl) CreateChargerPoint(charger *dto.ChargerPoint) error {
 	return dao.Db.CreateChargerPointEntry(charger)
 }
 

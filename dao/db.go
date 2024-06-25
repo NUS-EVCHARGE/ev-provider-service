@@ -14,7 +14,7 @@ type Database interface {
 	GetProviderEntryByCompany(companyName string) (dto.Provider, error)
 	GetAllProviderEntry() ([]dto.Provider, error)
 
-	CreateChargerPointEntry(chargerPoint dto.ChargerPoint) error
+	CreateChargerPointEntry(chargerPoint *dto.ChargerPoint) error
 	GetChargerPointEntryByID(chargerId uint) (dto.ChargerPoint, error)
 	GetChargerPointEntryByProviderID(providerId uint) ([]dto.ChargerPoint, error)
 	GetAllChargerPointEntry() ([]dto.ChargerPoint, error)

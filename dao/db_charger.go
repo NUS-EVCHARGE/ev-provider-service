@@ -7,8 +7,8 @@ import (
 )
 
 // Charging Point
-func (d *dbImpl) CreateChargerPointEntry(chargerPoint dto.ChargerPoint) error {
-	result := d.DbController.Create(&chargerPoint)
+func (d *dbImpl) CreateChargerPointEntry(chargerPoint *dto.ChargerPoint) error {
+	result := d.DbController.Create(chargerPoint)
 	return result.Error
 }
 
