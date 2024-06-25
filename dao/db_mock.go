@@ -8,7 +8,7 @@ import (
 
 type mockDbImpl struct {
 	providerList     []dto.Provider
-	chargerPointList []dto.ChargerPoint
+	chargerPointList []*dto.ChargerPoint
 	chargerList      []dto.Charger
 }
 
@@ -68,14 +68,18 @@ func (m *mockDbImpl) GetProviderEntry(email string) (dto.Provider, error) {
 
 // charger points
 // CreateChargerPointEntry implements Database.
-func (m *mockDbImpl) CreateChargerPointEntry(chargerPoint dto.ChargerPoint) error {
+func (m *mockDbImpl) CreateChargerPointEntry(chargerPoint *dto.ChargerPoint) error {
 	m.chargerPointList = append(m.chargerPointList, chargerPoint)
 	return nil
 }
 
 // GetAllChargerPointEntry implements Database.
 func (m *mockDbImpl) GetAllChargerPointEntry() ([]dto.ChargerPoint, error) {
-	return m.chargerPointList, nil
+	charger := []dto.ChargerPoint{}
+	for _, c := range m.chargerPointList {
+		charger = append(charger, *c)
+	}
+	return charger, nil
 }
 
 // GetChargerPointEntryByID implements Database.
@@ -83,7 +87,7 @@ func (m *mockDbImpl) GetChargerPointEntryByID(chargerId uint) (dto.ChargerPoint,
 	if len(m.chargerPointList) <= int(chargerId) {
 		return dto.ChargerPoint{}, fmt.Errorf("charger not found")
 	}
-	return m.chargerPointList[int(chargerId)], nil
+	return *m.chargerPointList[int(chargerId)], nil
 }
 
 // GetChargerPointEntryByProviderID implements Database.
@@ -91,7 +95,7 @@ func (m *mockDbImpl) GetChargerPointEntryByProviderID(providerId uint) ([]dto.Ch
 	var cpList = []dto.ChargerPoint{}
 	for _, cp := range m.chargerPointList {
 		if cp.ProviderId == providerId {
-			cpList = append(cpList, cp)
+			cpList = append(cpList, *cp)
 		}
 	}
 	return cpList, nil
@@ -102,7 +106,7 @@ func (m *mockDbImpl) UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) erro
 	if len(m.chargerPointList) <= int(chargerPoint.ID) {
 		return fmt.Errorf("charger not found")
 	}
-	m.chargerPointList[int(chargerPoint.ID)] = chargerPoint
+	m.chargerPointList[int(chargerPoint.ID)] = &chargerPoint
 	return nil
 }
 
@@ -138,7 +142,7 @@ func (m *mockDbImpl) GetChargerById(chargerId uint) (dto.Charger, error) {
 	return m.chargerList[chargerId], nil
 }
 
-func NewMockDatabase(providerList []dto.Provider, chargerPointList []dto.ChargerPoint, chargerList []dto.Charger) Database {
+func NewMockDatabase(providerList []dto.Provider, chargerPointList []*dto.ChargerPoint, chargerList []dto.Charger) Database {
 	return &mockDbImpl{
 		providerList:     providerList,
 		chargerList:      chargerList,

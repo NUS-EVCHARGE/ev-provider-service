@@ -30,7 +30,7 @@ func CreateChargerPointHandler(c *gin.Context) {
 		return
 	}
 
-	err = charger.ChargerControllerObj.CreateChargerPoint(chargerPoint)
+	err = charger.ChargerControllerObj.CreateChargerPoint(&chargerPoint)
 	if err != nil {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error creating Charger")

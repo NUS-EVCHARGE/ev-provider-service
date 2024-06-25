@@ -40,8 +40,8 @@ func setup() {
 	NewChargerController()
 	dao.Db = dao.NewMockDatabase([]dto.Provider{
 		mockProvider,
-	}, []dto.ChargerPoint{
-		mockChargerPoint,
+	}, []*dto.ChargerPoint{
+		&mockChargerPoint,
 	}, mockChargerList)
 }
 
@@ -67,7 +67,7 @@ func TestCreateChargingPointSucess(t *testing.T) {
 			Address: "new address",
 		},
 	}
-	err := ChargerControllerObj.CreateChargerPoint(newChargingPoint)
+	err := ChargerControllerObj.CreateChargerPoint(&newChargingPoint)
 	assert.Nil(t, err)
 	chargerDetails, err := ChargerControllerObj.GetAllCharger()
 	assert.Nil(t, err)
