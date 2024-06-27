@@ -88,18 +88,18 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 		}
 		for chargerIndex, c := range chargerList {
 			chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
-				Key:         fmt.Sprintf("%v_%v", chargerPointIndex, chargerIndex),
-				Lat:         chargerPoint.Lat,
-				Lng:         chargerPoint.Lng,
-				Address:     chargerPoint.Address,
-				UID:         c.UID,
-				ChargerType: c.ChargerType,
-				Status:      c.Status,
-				Details:     c.Details,
-				Power:       c.Power,
-				PowerType:   c.PowerType,
-				ID:          c.ChargerPointID,
-				// ChargerList: chargerList,
+				Key:            fmt.Sprintf("%v_%v", chargerPointIndex, chargerIndex),
+				Lat:            chargerPoint.Lat,
+				Lng:            chargerPoint.Lng,
+				Address:        chargerPoint.Address,
+				UID:            c.UID,
+				ChargerType:    c.ChargerType,
+				Status:         c.Status,
+				Details:        c.Details,
+				Power:          c.Power,
+				PowerType:      c.PowerType,
+				ChargerPointID: c.ChargerPointID,
+				ID:             c.ID,
 			})
 		}
 
