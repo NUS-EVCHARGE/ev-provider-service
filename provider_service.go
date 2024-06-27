@@ -99,6 +99,9 @@ func registerHandler() {
 		v1.POST("/signup", handler.SignUpHandler)
 		v1.POST("/confirm", handler.ConfirmUserHandler)
 		v1.POST("/resend", handler.ResendChallengeCodeHandler)
+		v1.GET("/ws", handler.WsChargerEndpoint)
+		v1.GET("/charger/chargerstatus", handler.GetChargerEndpointStatus)
+		v1.POST("/charger/chargerstatus", handler.SetChargerEndpointStatus)
 	}
 
 	protectedV1 := r.Group("/api/v1")
@@ -122,4 +125,13 @@ func registerHandler() {
 		// authentication handler
 		protectedV1.POST("/logout", handler.LogoutUserHandler)
 	}
+}
+
+func healthCheckPolling() {
+	// N providers,  M number of chargers -> N * M operations for health check (performance heavy) -> N threads -> high CPU usage
+	// autoscale -> scale service I * N * M -> healthcehcks operations -> each charger point to have two health request
+
+	// event driven
+	// service -> check all heart
+	// all heartbeat report to the services
 }

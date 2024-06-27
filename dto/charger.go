@@ -34,6 +34,12 @@ func (ChargerPoint) TableName() string {
 	return "charger_point_tab"
 }
 
+type IoTHubRequest struct {
+	Command   string `json:"command"`
+	CompanyId string `json:"company_id"`
+	ChargerId string `json:"charger_id"`
+	Status    string `json:"status"`
+}
 type ChargerFullDetails struct {
 	Key            string  `json:"key"`
 	ProviderName   string  `json:"provider_name"`
