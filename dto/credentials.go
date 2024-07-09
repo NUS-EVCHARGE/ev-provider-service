@@ -20,4 +20,5 @@ type LoginResponse struct {
 	RefreshToken string `json:"refreshToken"`
 	IdToken      string `json:"idToken"`
 	ExpiresIn    int    `json:"expiresIn"`
+	CompanyName  string `json:"company_name"`
 }

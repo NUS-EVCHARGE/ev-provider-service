@@ -5,10 +5,17 @@ import (
 	"net/http"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
 )
+
+type SignUpRequest struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	CompanyName string `json:"company_name"`
+}
 
 func LoginHandler(c *gin.Context) {
 	var (
@@ -28,20 +35,42 @@ func LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
+	// get compnay name
+	providerDetails, err := provider.ProviderControllerObj.GetProvider(credentials.Email)
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting provider")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+	resp.CompanyName = providerDetails.CompanyName
+
 	c.JSON(http.StatusOK, resp)
 	return
 }
 
 func SignUpHandler(c *gin.Context) {
 	var (
-		credentials dto.Credentials
+		signUpRequest   SignUpRequest
+		credentials     dto.Credentials
+		providerDetails dto.Provider
 	)
 
-	err := c.BindJSON(&credentials)
+	err := c.BindJSON(&signUpRequest)
 	if err != nil {
 		logrus.WithField("err", err).Error("error params")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
+	}
+	// check if company name already exist
+	if provider.ProviderControllerObj.IsCompanyExist(signUpRequest.CompanyName) {
+		logrus.Error("error company already exist")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", "error company already exist please contact adminisrator")))
+		return
+	}
+
+	credentials = dto.Credentials{
+		Email:    signUpRequest.Email,
+		Password: signUpRequest.Password,
 	}
 
 	err = authentication.AuthenticationControllerObj.RegisterUser(credentials)
@@ -50,6 +79,21 @@ func SignUpHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
+
+	providerDetails = dto.Provider{
+		UserEmail:   signUpRequest.Email,
+		CompanyName: signUpRequest.CompanyName,
+		Status:      "1",
+	}
+
+	// if successful, write to db
+	_, err = provider.ProviderControllerObj.CreateProvider(providerDetails)
+	if err != nil {
+		logrus.WithField("err", err).Error("error registering user when inserting to db")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
 	c.JSON(http.StatusOK, CreateResponse("Proceed to confirm user"))
 	return
 }

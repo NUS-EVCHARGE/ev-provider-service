@@ -5,11 +5,13 @@ import (
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	"github.com/sirupsen/logrus"
 )
 
 type ProviderController interface {
 	CreateProvider(provider dto.Provider) (dto.Provider, error)
 	GetProvider(email string) (dto.Provider, error)
+	IsCompanyExist(companyName string) bool
 	GetAllProvider() ([]dto.Provider, error)
 	DeleteProvider(providerId uint) error
 	UpdateProvider(provider dto.Provider) error
@@ -27,6 +29,15 @@ func (p ProviderControllerImpl) CreateProvider(provider dto.Provider) (dto.Provi
 
 func (p ProviderControllerImpl) GetProvider(email string) (dto.Provider, error) {
 	return dao.Db.GetProviderEntry(email)
+}
+
+func (p ProviderControllerImpl) IsCompanyExist(companyName string) bool {
+	_, err := dao.Db.GetProviderEntryByCompany(companyName)
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting provider by company")
+		return false
+	}
+	return true
 }
 
 func (p ProviderControllerImpl) GetAllProvider() ([]dto.Provider, error) {
