@@ -51,7 +51,6 @@ func LoginHandler(c *gin.Context) {
 func SignUpHandler(c *gin.Context) {
 	var (
 		signUpRequest   SignUpRequest
-		credentials     dto.Credentials
 		providerDetails dto.Provider
 	)
 
@@ -68,12 +67,13 @@ func SignUpHandler(c *gin.Context) {
 		return
 	}
 
-	credentials = dto.Credentials{
-		Email:    signUpRequest.Email,
-		Password: signUpRequest.Password,
+	dtoSignUpRequest := dto.SignUpRequest{
+		Email:       signUpRequest.Email,
+		Password:    signUpRequest.Password,
+		CompanyName: signUpRequest.CompanyName,
 	}
 
-	err = authentication.AuthenticationControllerObj.RegisterUser(credentials)
+	err = authentication.AuthenticationControllerObj.RegisterUser(dtoSignUpRequest)
 	if err != nil {
 		logrus.WithField("err", err).Error("error registering user")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))

@@ -15,7 +15,7 @@ import (
 )
 
 type AuthenticationController interface {
-	RegisterUser(loginCredential dto.Credentials) error
+	RegisterUser(signUpRequest dto.SignUpRequest) error
 	LoginUser(loginCredential dto.Credentials) (*dto.LoginResponse, error)
 	ConfirmUser(userInfo dto.ConfirmUser) error
 	ResendChallengeCode(resendRequest dto.SignUpResendRequest) error
@@ -106,23 +106,27 @@ func (a AuthenticationControllerImpl) GetUserInfo(accessToken string) error {
 	return nil
 }
 
-func (a AuthenticationControllerImpl) RegisterUser(loginCredential dto.Credentials) error {
+func (a AuthenticationControllerImpl) RegisterUser(signUpRequest dto.SignUpRequest) error {
 
-	secretHash := generateSecretHash(clientSecret, loginCredential.Email, clientID)
+	secretHash := generateSecretHash(clientSecret, signUpRequest.Email, clientID)
 
 	input := &cognitoidentityprovider.SignUpInput{
 		ClientId:   aws.String(clientID),
-		Username:   aws.String(loginCredential.Email),
-		Password:   aws.String(loginCredential.Password),
+		Username:   aws.String(signUpRequest.Email),
+		Password:   aws.String(signUpRequest.Password),
 		SecretHash: aws.String(secretHash),
 		UserAttributes: []*cognitoidentityprovider.AttributeType{
 			{
 				Name:  aws.String("email"),
-				Value: aws.String(loginCredential.Email),
+				Value: aws.String(signUpRequest.Email),
 			},
 			{
 				Name:  aws.String("preferred_username"),
-				Value: aws.String(loginCredential.Email),
+				Value: aws.String(signUpRequest.Email),
+			},
+			{
+				Name:  aws.String("custom:company"),
+				Value: aws.String(signUpRequest.CompanyName),
 			},
 		},
 	}

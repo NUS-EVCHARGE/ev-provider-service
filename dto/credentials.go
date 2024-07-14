@@ -4,6 +4,12 @@ type SignUpResendRequest struct {
 	Email string `json:"email"`
 }
 
+type SignUpRequest struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	CompanyName string `json:"company_name"`
+}
+
 type Credentials struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
