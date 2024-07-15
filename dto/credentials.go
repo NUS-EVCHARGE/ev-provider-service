@@ -4,6 +4,12 @@ type SignUpResendRequest struct {
 	Email string `json:"email"`
 }
 
+type SignUpRequest struct {
+	Email       string `json:"email"`
+	Password    string `json:"password"`
+	CompanyName string `json:"company_name"`
+}
+
 type Credentials struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
@@ -20,4 +26,5 @@ type LoginResponse struct {
 	RefreshToken string `json:"refreshToken"`
 	IdToken      string `json:"idToken"`
 	ExpiresIn    int    `json:"expiresIn"`
+	CompanyName  string `json:"company_name"`
 }
