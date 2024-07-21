@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/license"
 	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
@@ -58,6 +59,7 @@ func main() {
 
 	provider.NewProviderController()
 	charger.NewChargerController()
+	license.NewLicenseController()
 	authentication.NewAuthenticationController()
 	InitHttpServer(configObj.HttpAddress)
 }
@@ -124,6 +126,10 @@ func registerHandler() {
 
 		// authentication handler
 		protectedV1.POST("/logout", handler.LogoutUserHandler)
+
+		// license handler
+		protectedV1.PATCH("/license", handler.UpdateLicenseByCompanyHandler)
+		protectedV1.GET("/license", handler.GetLicenseByCompanyHandler)
 	}
 }
 
