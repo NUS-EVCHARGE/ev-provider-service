@@ -24,7 +24,20 @@ func (p ProviderControllerImpl) CreateProvider(provider dto.Provider) (dto.Provi
 	if _, err := p.GetProvider(provider.UserEmail); err == nil {
 		return dto.Provider{}, fmt.Errorf("provider already exist")
 	}
-	return dao.Db.CreateProviderEntry(provider)
+	provider, err := dao.Db.CreateProviderEntry(provider)
+	if err != nil {
+		return dto.Provider{}, err
+	}
+	_, err = dao.Db.CreateLicense(dto.License{
+		CompanyId: int(provider.ID),
+		Standard:  0,
+		Starter:   0,
+		Premium:   0,
+	})
+	if err != nil {
+		return dto.Provider{}, err
+	}
+	return provider, nil
 }
 
 func (p ProviderControllerImpl) GetProvider(email string) (dto.Provider, error) {

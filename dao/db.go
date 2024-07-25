@@ -7,25 +7,30 @@ import (
 )
 
 type Database interface {
+	// provider impl
 	CreateProviderEntry(Provider dto.Provider) (dto.Provider, error)
 	UpdateProviderEntry(Provider dto.Provider) error
 	DeleteProviderEntry(Provider dto.Provider) error
 	GetProviderEntry(email string) (dto.Provider, error)
 	GetProviderEntryByCompany(companyName string) (dto.Provider, error)
 	GetAllProviderEntry() ([]dto.Provider, error)
-
+	// charger point impl
 	CreateChargerPointEntry(chargerPoint *dto.ChargerPoint) error
 	GetChargerPointEntryByID(chargerId uint) (dto.ChargerPoint, error)
 	GetChargerPointEntryByProviderID(providerId uint) ([]dto.ChargerPoint, error)
 	GetAllChargerPointEntry() ([]dto.ChargerPoint, error)
 	GetAllChargerPointEntryByProviderID(providerId int) ([]dto.ChargerPoint, error)
 	UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) error
-
+	// charger impl
 	CreateChargerEntry(charger dto.Charger) error
 	GetChargerPointByLocation(providerId int, lat, lng float64) (dto.ChargerPoint, error)
 	GetChargerByChargerPointId(chargerPointId uint) ([]dto.Charger, error)
 	GetChargerById(chargerId uint) (dto.Charger, error)
 	UpdateChargerEntry(charger dto.Charger) error
+	// license impl
+	CreateLicense(license dto.License) (dto.License, error)
+	GetLicenseByCompanyId(companyId int) (dto.License, error)
+	UpdateLicense(license dto.License) error
 }
 
 var (
