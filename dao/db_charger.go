@@ -48,10 +48,10 @@ func (d *dbImpl) UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) error {
 	return results.Error
 }
 
-func (d *dbImpl) GetChargerPointByLocation(providerId int, lat, lng float64) (dto.ChargerPoint, error) {
+func (d *dbImpl) GetChargerPointByLocation(providerId int, placeId string) (dto.ChargerPoint, error) {
 	var existingCharger dto.ChargerPoint
 
-	results := d.DbController.Where("lat = ? and lng = ? and provider_id = ?", lat, lng, providerId).Find(&existingCharger)
+	results := d.DbController.Where("place_id = ? AND provider_id = ?", placeId, providerId).Find(&existingCharger)
 	return existingCharger, results.Error
 }
 

@@ -109,6 +109,8 @@ func registerHandler() {
 	protectedV1 := r.Group("/api/v1")
 	protectedV1.Use(handler.AuthMiddlewareHandler)
 	{
+		// recommandaton handler
+		protectedV1.GET("/recommendation", handler.RecommendationHandler)
 		// provider handler
 		protectedV1.POST("/provider", handler.CreateProviderHandler)
 		protectedV1.GET("/provider/:provider_email", handler.GetProviderHandler)

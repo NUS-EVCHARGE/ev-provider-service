@@ -8,7 +8,7 @@ import (
 )
 
 type ChargerController interface {
-	SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error)
+	SearchChargerPoint(providerId int, placeId string) (dto.ChargerPoint, error)
 	CreateChargerPoint(charger *dto.ChargerPoint) error
 	UpdateChargerPoint(charger dto.ChargerPoint) error
 
@@ -44,9 +44,8 @@ func (c *ChargerImpl) GetAllCharger() ([]dto.ChargerFullDetails, error) {
 		if err != nil {
 			return chargerFullDetailList, err
 		}
+		// todo: need to revamp ui where they click in to view more details?
 		chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
-			Lat:         chargerPoint.Lat,
-			Lng:         chargerPoint.Lng,
 			Address:     chargerPoint.Address,
 			ChargerList: chargerList,
 		})
@@ -89,8 +88,6 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 		for chargerIndex, c := range chargerList {
 			chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
 				Key:            fmt.Sprintf("%v_%v", chargerPointIndex, chargerIndex),
-				Lat:            chargerPoint.Lat,
-				Lng:            chargerPoint.Lng,
 				Address:        chargerPoint.Address,
 				UID:            c.UID,
 				ChargerType:    c.ChargerType,
@@ -114,8 +111,8 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 	return chargerFullDetailList, nil
 }
 
-func (c *ChargerImpl) SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error) {
-	return dao.Db.GetChargerPointByLocation(providerId, lat, lng)
+func (c *ChargerImpl) SearchChargerPoint(providerId int, placeId string) (dto.ChargerPoint, error) {
+	return dao.Db.GetChargerPointByLocation(providerId, placeId)
 }
 
 // charging point

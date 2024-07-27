@@ -4,6 +4,7 @@ type ChargerPoint struct {
 	//gorm.Model
 	ID         uint    `gorm:"primaryKey" json:"id"`
 	ProviderId uint    `gorm:"column:provider_id" json:"provider_id"`
+	PlaceId    string  `gorm:"column:place_id" json:"place_id"`
 	Lat        float64 `gorm:"column:lat" json:"lat"`
 	Lng        float64 `gorm:"column:lng" json:"lng"`
 	Address    string  `gorm:"colummn:address" json:"address"`
