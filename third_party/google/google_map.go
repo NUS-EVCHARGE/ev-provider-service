@@ -31,3 +31,10 @@ func (g *GoogleClient) GetRecommendation(keyword string) ([]maps.AutocompletePre
 	}
 	return newRR, nil
 }
+
+func (g *GoogleClient) GetPlaceDetails(placeId string) (maps.PlaceDetailsResult, error) {
+	res, err := g.Client.PlaceDetails(context.Background(), &maps.PlaceDetailsRequest{
+		PlaceID: placeId,
+	})
+	return res, err
+}
