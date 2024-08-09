@@ -10,7 +10,10 @@ import (
 )
 
 func GetLicenseByCompanyHandler(c *gin.Context) {
-	companyName := c.Query("company_name")
+	providerObj, _ := c.Get("provider")
+
+	companyName := providerObj.(dto.Provider).CompanyName
+
 	if companyName == "" {
 		c.JSON(http.StatusBadRequest, CreateResponse("company_name undefined"))
 		return

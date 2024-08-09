@@ -5,7 +5,6 @@ import (
 	"net/http"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
-	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -45,16 +44,10 @@ func CreateChargerHandler(c *gin.Context) {
 		return
 	}
 	// get company id
-	providerObj, err := provider.ProviderControllerObj.GetProvider(chargerReq.Email)
-	if err != nil {
-		// todo: change to common library
-		logrus.WithField("err", err).Error("error getting provider")
-		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
-		return
-	}
+	providerObj, _ := c.Get("provider")
 
 	// check for charger point
-	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.ID), chargerReq.Lat, chargerReq.Lng)
+	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.(dto.Provider).ID), chargerReq.Lat, chargerReq.Lng)
 	if err != nil {
 		logrus.WithField("err", err).Error("get charger point error")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
@@ -64,7 +57,7 @@ func CreateChargerHandler(c *gin.Context) {
 	// there is no charger point
 	if chargerPoint.ID == 0 {
 		chargerPoint = dto.ChargerPoint{
-			ProviderId: providerObj.ID,
+			ProviderId: providerObj.(dto.Provider).ID,
 			Lat:        chargerReq.Lat,
 			Lng:        chargerReq.Lng,
 		}
@@ -106,7 +99,9 @@ func CreateChargerHandler(c *gin.Context) {
 // @Success		200	{object}	[]dto.ChargerDetails	"returns a list of Charger Details object"
 // @Router			/charger [get]
 func GetAllChargerDetailsHandler(c *gin.Context) {
-	companeName := c.Query("company_name")
+	providerObj, _ := c.Get("provider")
+	companeName := providerObj.(dto.Provider).CompanyName
+
 	if companeName != "" {
 		chargerResult, err := charger.ChargerControllerObj.GetAllChargerByCompanyName(companeName)
 		if err != nil {
