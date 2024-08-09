@@ -31,6 +31,13 @@ type Database interface {
 	CreateLicense(license dto.License) (dto.License, error)
 	GetLicenseByCompanyId(companyId int) (dto.License, error)
 	UpdateLicense(license dto.License) error
+	// rewards impl
+	CreateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error)
+	UpdateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error)
+	GetCoinPolicy(providerId int) (dto.CoinPolicy, error)
+	CreateVouchers(voucher dto.Vouchers) (dto.Vouchers, error)
+	GetAllVouchers(providerId int) ([]dto.Vouchers, error)
+	UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error)
 }
 
 var (

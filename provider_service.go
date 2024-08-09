@@ -6,6 +6,7 @@ import (
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/license"
+	controller "github.com/NUS-EVCHARGE/ev-provider-service/controller/rewards"
 	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
@@ -61,6 +62,8 @@ func main() {
 	charger.NewChargerController()
 	license.NewLicenseController()
 	authentication.NewAuthenticationController()
+	controller.NewRewardController()
+
 	InitHttpServer(configObj.HttpAddress)
 }
 
