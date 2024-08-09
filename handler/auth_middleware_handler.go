@@ -2,11 +2,13 @@ package handler
 
 import (
 	"fmt"
-	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
-	"github.com/gin-gonic/gin"
-	"github.com/sirupsen/logrus"
 	"net/http"
 	"strings"
+
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
+	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
 )
 
 func AuthMiddlewareHandler(c *gin.Context) {
@@ -32,7 +34,7 @@ func AuthMiddlewareHandler(c *gin.Context) {
 		accessToken = accessToken[len(bearerPrefix):]
 	}
 
-	err := authentication.AuthenticationControllerObj.GetUserInfo(accessToken)
+	userInfo, err := authentication.AuthenticationControllerObj.GetUserInfo(accessToken)
 	if err != nil {
 		logrus.WithField("err", err).Error("error validating token")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
@@ -40,5 +42,18 @@ func AuthMiddlewareHandler(c *gin.Context) {
 		return
 	}
 
-	return
+	for _, us := range userInfo.UserAttributes {
+		if *us.Name == "email" {
+			provider, err := provider.ProviderControllerObj.GetProvider(*us.Value)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+				c.Abort()
+				return
+			}
+			c.Set("provider", provider)
+			return
+		}
+	}
+	c.JSON(http.StatusBadRequest, CreateResponse("no provider details found"))
+	c.Abort()
 }
