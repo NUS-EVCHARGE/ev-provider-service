@@ -23,7 +23,7 @@ type Database interface {
 	UpdateChargerPointEntry(chargerPoint dto.ChargerPoint) error
 	// charger impl
 	CreateChargerEntry(charger dto.Charger) error
-	GetChargerPointByLocation(providerId int, lat, lng float64) (dto.ChargerPoint, error)
+	GetChargerPointByLocation(providerId int, placeId string) (dto.ChargerPoint, error)
 	GetChargerByChargerPointId(chargerPointId uint) ([]dto.Charger, error)
 	GetChargerById(chargerId uint) (dto.Charger, error)
 	UpdateChargerEntry(charger dto.Charger) error

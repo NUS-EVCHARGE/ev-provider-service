@@ -12,8 +12,7 @@ import (
 
 type CreateChargerRequest struct {
 	Email              string  `json:"email"`
-	Lat                float64 `gorm:"column:lat" json:"lat"`
-	Lng                float64 `gorm:"column:lng" json:"lng"`
+	PlaceId            string  `json:"place_id"`
 	Address            string  `gorm:"colummn:address" json:"address"`
 	ProviderName       string  `gorm:"provider_name" json:"provider_name"`
 	UID                string  `gorm:"column:uid" json:"uid"`
@@ -47,7 +46,7 @@ func CreateChargerHandler(c *gin.Context) {
 	providerObj, _ := c.Get("provider")
 
 	// check for charger point
-	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.(dto.Provider).ID), chargerReq.Lat, chargerReq.Lng)
+	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.(dto.ChargerPoint).ID), chargerReq.PlaceId)
 	if err != nil {
 		logrus.WithField("err", err).Error("get charger point error")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
@@ -56,12 +55,20 @@ func CreateChargerHandler(c *gin.Context) {
 
 	// there is no charger point
 	if chargerPoint.ID == 0 {
+		res, err := GoogleClient.GetPlaceDetails(chargerReq.PlaceId)
+		if err != nil {
+			logrus.WithField("err", err).Error("get charger point details error from google")
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+			return
+		}
+
 		chargerPoint = dto.ChargerPoint{
 			ProviderId: providerObj.(dto.Provider).ID,
-			Lat:        chargerReq.Lat,
-			Lng:        chargerReq.Lng,
+			PlaceId:    chargerReq.PlaceId,
+			Lat:        res.Geometry.Location.Lat,
+			Lng:        res.Geometry.Location.Lng,
 		}
-		err := charger.ChargerControllerObj.CreateChargerPoint(&chargerPoint)
+		err = charger.ChargerControllerObj.CreateChargerPoint(&chargerPoint)
 		if err != nil {
 			logrus.WithField("err", err).Error("error creating charger point")
 			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))

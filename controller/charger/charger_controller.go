@@ -5,10 +5,11 @@ import (
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	third_party "github.com/NUS-EVCHARGE/ev-provider-service/third_party/google"
 )
 
 type ChargerController interface {
-	SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error)
+	SearchChargerPoint(providerId int, placeId string) (dto.ChargerPoint, error)
 	CreateChargerPoint(charger *dto.ChargerPoint) error
 	UpdateChargerPoint(charger dto.ChargerPoint) error
 
@@ -44,9 +45,8 @@ func (c *ChargerImpl) GetAllCharger() ([]dto.ChargerFullDetails, error) {
 		if err != nil {
 			return chargerFullDetailList, err
 		}
+		// todo: need to revamp ui where they click in to view more details?
 		chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
-			Lat:         chargerPoint.Lat,
-			Lng:         chargerPoint.Lng,
 			Address:     chargerPoint.Address,
 			ChargerList: chargerList,
 		})
@@ -89,8 +89,6 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 		for chargerIndex, c := range chargerList {
 			chargerFullDetailList = append(chargerFullDetailList, dto.ChargerFullDetails{
 				Key:            fmt.Sprintf("%v_%v", chargerPointIndex, chargerIndex),
-				Lat:            chargerPoint.Lat,
-				Lng:            chargerPoint.Lng,
 				Address:        chargerPoint.Address,
 				UID:            c.UID,
 				ChargerType:    c.ChargerType,
@@ -100,6 +98,8 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 				PowerType:      c.PowerType,
 				ChargerPointID: c.ChargerPointID,
 				ID:             c.ID,
+				Lat:            chargerPoint.Lat,
+				Lng:            chargerPoint.Lng,
 			})
 		}
 
@@ -114,12 +114,22 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 	return chargerFullDetailList, nil
 }
 
-func (c *ChargerImpl) SearchChargerPoint(providerId int, lat, lng float64) (dto.ChargerPoint, error) {
-	return dao.Db.GetChargerPointByLocation(providerId, lat, lng)
+func (c *ChargerImpl) SearchChargerPoint(providerId int, placeId string) (dto.ChargerPoint, error) {
+	return dao.Db.GetChargerPointByLocation(providerId, placeId)
 }
 
 // charging point
 func (c *ChargerImpl) CreateChargerPoint(charger *dto.ChargerPoint) error {
+	googleClient := third_party.NewGoogleClient()
+	// get information and set lat and lng and address
+	placeDetails, err := googleClient.GetPlaceDetails(charger.PlaceId)
+	if err != nil {
+		return err
+	}
+	charger.Lat = placeDetails.Geometry.Location.Lat
+	charger.Lng = placeDetails.Geometry.Location.Lng
+	charger.Address = placeDetails.FormattedAddress
+
 	return dao.Db.CreateChargerPointEntry(charger)
 }
 
