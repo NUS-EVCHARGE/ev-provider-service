@@ -12,6 +12,41 @@ type mockDbImpl struct {
 	chargerList      []dto.Charger
 }
 
+// SetVouchersToBeExpired implements Database.
+func (m *mockDbImpl) SetVouchersToBeExpired(currentTime int64) error {
+	panic("unimplemented")
+}
+
+// CreateCoinPolicy implements Database.
+func (m *mockDbImpl) CreateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error) {
+	panic("unimplemented")
+}
+
+// CreateVouchers implements Database.
+func (m *mockDbImpl) CreateVouchers(voucher dto.Vouchers) (dto.Vouchers, error) {
+	panic("unimplemented")
+}
+
+// GetAllVouchers implements Database.
+func (m *mockDbImpl) GetAllVouchers(providerId int) ([]dto.Vouchers, error) {
+	panic("unimplemented")
+}
+
+// GetCoinPolicy implements Database.
+func (m *mockDbImpl) GetCoinPolicy(providerId int) (dto.CoinPolicy, error) {
+	panic("unimplemented")
+}
+
+// UpdateCoinPolicy implements Database.
+func (m *mockDbImpl) UpdateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error) {
+	panic("unimplemented")
+}
+
+// UpdateVoucher implements Database.
+func (m *mockDbImpl) UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error) {
+	panic("unimplemented")
+}
+
 // CreateLicense implements Database.
 func (*mockDbImpl) CreateLicense(license dto.License) (dto.License, error) {
 	panic("unimplemented")
