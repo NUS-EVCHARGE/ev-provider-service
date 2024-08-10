@@ -44,7 +44,8 @@ func (p ProviderControllerImpl) CreateProvider(provider dto.Provider) (dto.Provi
 	}
 
 	// init coin policy
-	err = controller.RewardsControllerObj.CreateCoinPolicy(dto.CoinPolicy{Status: false})
+	var status = false
+	err = controller.RewardsControllerObj.CreateCoinPolicy(dto.CoinPolicy{Status: &status, ProviderId: int(provider.ID)})
 	if err != nil {
 		return dto.Provider{}, err
 	}

@@ -53,7 +53,15 @@ func (r *RewardsControllerImpl) CreateVoucher(voucher dto.Vouchers) error {
 }
 
 func (r *RewardsControllerImpl) UpdateVoucher(voucher dto.Vouchers) error {
-	_, err := dao.Db.UpdateVoucher(voucher)
+	t, err := time.Parse(time.RFC3339, voucher.ExpiryDate)
+	if err != nil {
+		return err
+	}
+	voucher.ExpiryDateInUnix = t.UnixNano()
+	if time.Now().UnixNano() < voucher.ExpiryDateInUnix {
+		voucher.Status = true
+	}
+	_, err = dao.Db.UpdateVoucher(voucher)
 	return err
 }
 

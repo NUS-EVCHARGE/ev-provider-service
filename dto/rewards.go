@@ -1,10 +1,11 @@
 package dto
 
 type CoinPolicy struct {
-	MaxUsableCoinPerTransaction int  `gorm:"column:max_usable_coin_per_transaction" json:"max_usable_coin_per_transaction"`
-	CashAmount                  int  `gorm:"column:cash_amount" json:"cash_amount"`
-	Status                      bool `gorm:"column:status" json:"status"`
-	ProviderId                  int  `gorm:"column:provider_id" json:"provider_id"`
+	ID                          int   `gorm:"column:id"`
+	MaxUsableCoinPerTransaction int   `gorm:"column:max_usable_coin_per_transaction" json:"max_usable_coin_per_transaction"`
+	CashAmount                  int   `gorm:"column:cash_amount" json:"cash_amount"`
+	Status                      *bool `gorm:"column:status" json:"status"`
+	ProviderId                  int   `gorm:"column:provider_id" json:"provider_id"`
 }
 
 func (CoinPolicy) TableName() string {
@@ -12,6 +13,7 @@ func (CoinPolicy) TableName() string {
 }
 
 type Vouchers struct {
+	ID               int    `gorm:"column:id" json:"id"`
 	Name             string `gorm:"column:name" json:"name"`
 	ProviderId       int    `gorm:"column:provider_id"`
 	DiscountAmount   int    `gorm:"column:discount_amount" json:"discount_amount"`
