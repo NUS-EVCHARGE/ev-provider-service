@@ -16,6 +16,10 @@
         {
           "name": "rds!db-7e89b549-42c3-48b5-b8b5-6aed854ff555",
           "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:471112786163:secret:rds!db-7e89b549-42c3-48b5-b8b5-6aed854ff555-aqcDph"
+        },
+        {
+          "name": "evapp_api_key",
+          "valueFrom": "arn:aws:secretsmanager:ap-southeast-1:471112786163:secret:evapp_api_key-1iFBPt"
         }
       ],
       "essential": true,
