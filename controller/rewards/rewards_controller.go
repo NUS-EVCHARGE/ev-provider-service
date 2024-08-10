@@ -1,8 +1,11 @@
 package controller
 
 import (
+	"time"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	"github.com/sirupsen/logrus"
 )
 
 type RewardsController interface {
@@ -12,6 +15,7 @@ type RewardsController interface {
 	CreateVoucher(voucher dto.Vouchers) error
 	UpdateVoucher(voucher dto.Vouchers) error
 	GetAllVouchers(providerId int) ([]dto.Vouchers, error)
+	ExpireVouchers()
 }
 
 type RewardsControllerImpl struct {
@@ -38,7 +42,13 @@ func (r *RewardsControllerImpl) GetCoinPolicy(providerId int) (dto.CoinPolicy, e
 }
 
 func (r *RewardsControllerImpl) CreateVoucher(voucher dto.Vouchers) error {
-	_, err := dao.Db.CreateVouchers(voucher)
+	t, err := time.Parse(time.RFC3339, voucher.ExpiryDate)
+	if err != nil {
+		return err
+	}
+	voucher.ExpiryDateInUnix = t.UnixNano()
+	voucher.Status = true
+	_, err = dao.Db.CreateVouchers(voucher)
 	return err
 }
 
@@ -48,5 +58,28 @@ func (r *RewardsControllerImpl) UpdateVoucher(voucher dto.Vouchers) error {
 }
 
 func (r *RewardsControllerImpl) GetAllVouchers(providerId int) ([]dto.Vouchers, error) {
-	return dao.Db.GetAllVouchers(providerId)
+	voucherList, err := dao.Db.GetAllVouchers(providerId)
+	if err != nil {
+		return nil, err
+	}
+	for index, v := range voucherList {
+		voucherList[index].ExpiryDate = time.Unix(0, v.ExpiryDateInUnix).Format("2006-01-02 15:04")
+	}
+	return voucherList, nil
+}
+
+// this is a goroutine that sets voucher to be expired
+func (r *RewardsControllerImpl) ExpireVouchers() {
+	// update DB for every 10 seconds when a voucher has expired
+	ticker := time.NewTicker(10 * time.Second)
+	for {
+		select {
+		case <-ticker.C:
+			// get current time
+			currentTime := time.Now().UnixNano()
+			if err := dao.Db.SetVouchersToBeExpired(currentTime); err != nil {
+				logrus.WithField("err", err).Error("error_getting_expired_vouchers")
+			}
+		}
+	}
 }

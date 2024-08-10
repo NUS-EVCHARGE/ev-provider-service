@@ -64,6 +64,9 @@ func main() {
 	authentication.NewAuthenticationController()
 	controller.NewRewardController()
 
+	// put all goroutines here
+	go controller.RewardsControllerObj.ExpireVouchers()
+
 	InitHttpServer(configObj.HttpAddress)
 }
 
@@ -133,6 +136,16 @@ func registerHandler() {
 		// license handler
 		protectedV1.PATCH("/license", handler.UpdateLicenseByCompanyHandler)
 		protectedV1.GET("/license", handler.GetLicenseByCompanyHandler)
+
+		// rewards handler
+		// // voucher handler
+		protectedV1.POST("/voucher", handler.CreateVoucher)
+		protectedV1.GET("/voucher", handler.GetVoucher)
+		protectedV1.PATCH("/voucher", handler.UpdateVoucher)
+		// // coin handler
+		protectedV1.PATCH("/coin_policy", handler.UpdateCoinPolicy)
+		protectedV1.GET("/coin_policy", handler.GetCoinPolicy)
+
 	}
 }
 

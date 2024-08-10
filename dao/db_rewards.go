@@ -33,3 +33,8 @@ func (db *dbImpl) UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error) {
 	result := db.DbController.Updates(&voucher)
 	return voucher, result.Error
 }
+
+func (db *dbImpl) SetVouchersToBeExpired(currentTime int64) error {
+	result := db.DbController.Where("expiry_date <= ?", currentTime).Table("voucher_tab").Update("status", 0)
+	return result.Error
+}

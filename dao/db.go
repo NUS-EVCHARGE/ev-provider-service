@@ -38,6 +38,7 @@ type Database interface {
 	CreateVouchers(voucher dto.Vouchers) (dto.Vouchers, error)
 	GetAllVouchers(providerId int) ([]dto.Vouchers, error)
 	UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error)
+	SetVouchersToBeExpired(currentTime int64) error
 }
 
 var (

@@ -12,6 +12,11 @@ type mockDbImpl struct {
 	chargerList      []dto.Charger
 }
 
+// SetVouchersToBeExpired implements Database.
+func (m *mockDbImpl) SetVouchersToBeExpired(currentTime int64) error {
+	panic("unimplemented")
+}
+
 // CreateCoinPolicy implements Database.
 func (m *mockDbImpl) CreateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error) {
 	panic("unimplemented")

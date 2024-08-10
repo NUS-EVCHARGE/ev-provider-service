@@ -3,6 +3,7 @@ package provider
 import (
 	"fmt"
 
+	controller "github.com/NUS-EVCHARGE/ev-provider-service/controller/rewards"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/sirupsen/logrus"
@@ -24,10 +25,14 @@ func (p ProviderControllerImpl) CreateProvider(provider dto.Provider) (dto.Provi
 	if _, err := p.GetProvider(provider.UserEmail); err == nil {
 		return dto.Provider{}, fmt.Errorf("provider already exist")
 	}
+
+	// create provider entry
 	provider, err := dao.Db.CreateProviderEntry(provider)
 	if err != nil {
 		return dto.Provider{}, err
 	}
+
+	// create base license
 	_, err = dao.Db.CreateLicense(dto.License{
 		CompanyId: int(provider.ID),
 		Standard:  0,
@@ -37,6 +42,13 @@ func (p ProviderControllerImpl) CreateProvider(provider dto.Provider) (dto.Provi
 	if err != nil {
 		return dto.Provider{}, err
 	}
+
+	// init coin policy
+	err = controller.RewardsControllerObj.CreateCoinPolicy(dto.CoinPolicy{Status: false})
+	if err != nil {
+		return dto.Provider{}, err
+	}
+
 	return provider, nil
 }
 
