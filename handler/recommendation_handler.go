@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	googleClient = google.NewGoogleClient()
+	GoogleClient = google.NewGoogleClient()
 )
 
 func RecommendationHandler(c *gin.Context) {
@@ -18,7 +18,7 @@ func RecommendationHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse("input is not defined"))
 		return
 	}
-	res, err := googleClient.GetRecommendation(input)
+	res, err := GoogleClient.GetRecommendation(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return

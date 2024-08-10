@@ -5,6 +5,7 @@ import (
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
+	third_party "github.com/NUS-EVCHARGE/ev-provider-service/third_party/google"
 )
 
 type ChargerController interface {
@@ -97,6 +98,8 @@ func (c *ChargerImpl) GetAllChargerByCompanyName(companyName string) ([]dto.Char
 				PowerType:      c.PowerType,
 				ChargerPointID: c.ChargerPointID,
 				ID:             c.ID,
+				Lat:            chargerPoint.Lat,
+				Lng:            chargerPoint.Lng,
 			})
 		}
 
@@ -117,6 +120,16 @@ func (c *ChargerImpl) SearchChargerPoint(providerId int, placeId string) (dto.Ch
 
 // charging point
 func (c *ChargerImpl) CreateChargerPoint(charger *dto.ChargerPoint) error {
+	googleClient := third_party.NewGoogleClient()
+	// get information and set lat and lng and address
+	placeDetails, err := googleClient.GetPlaceDetails(charger.PlaceId)
+	if err != nil {
+		return err
+	}
+	charger.Lat = placeDetails.Geometry.Location.Lat
+	charger.Lng = placeDetails.Geometry.Location.Lng
+	charger.Address = placeDetails.FormattedAddress
+
 	return dao.Db.CreateChargerPointEntry(charger)
 }
 

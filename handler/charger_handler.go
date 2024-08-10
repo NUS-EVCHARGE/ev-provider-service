@@ -62,7 +62,7 @@ func CreateChargerHandler(c *gin.Context) {
 
 	// there is no charger point
 	if chargerPoint.ID == 0 {
-		res, err := googleClient.GetPlaceDetails(chargerReq.PlaceId)
+		res, err := GoogleClient.GetPlaceDetails(chargerReq.PlaceId)
 		if err != nil {
 			logrus.WithField("err", err).Error("get charger point details error from google")
 			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
