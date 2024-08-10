@@ -73,7 +73,7 @@ func (*mockDbImpl) GetProviderEntryByCompany(companyName string) (dto.Provider, 
 }
 
 // GetChargerPointByLocation implements Database.
-func (*mockDbImpl) GetChargerPointByLocation(providerId int, lat float64, lng float64) (dto.ChargerPoint, error) {
+func (*mockDbImpl) GetChargerPointByLocation(providerId int, placeId string) (dto.ChargerPoint, error) {
 	panic("unimplemented")
 }
 
