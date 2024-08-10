@@ -46,7 +46,7 @@ func CreateChargerHandler(c *gin.Context) {
 	providerObj, _ := c.Get("provider")
 
 	// check for charger point
-	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.(dto.ChargerPoint).ID), chargerReq.PlaceId)
+	chargerPoint, err := charger.ChargerControllerObj.SearchChargerPoint(int(providerObj.(dto.Provider).ID), chargerReq.PlaceId)
 	if err != nil {
 		logrus.WithField("err", err).Error("get charger point error")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
