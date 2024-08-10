@@ -5,13 +5,14 @@ import (
 	"crypto/sha256"
 	"encoding/base64"
 	"fmt"
+	"log"
+
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/cognitoidentityprovider"
 	"github.com/sirupsen/logrus"
 	_ "golang.org/x/net/context"
-	"log"
 )
 
 type AuthenticationController interface {
@@ -20,7 +21,7 @@ type AuthenticationController interface {
 	ConfirmUser(userInfo dto.ConfirmUser) error
 	ResendChallengeCode(resendRequest dto.SignUpResendRequest) error
 	LogoutUser(accessToken string) error
-	GetUserInfo(accessToken string) error
+	GetUserInfo(accessToken string) (*cognitoidentityprovider.GetUserOutput, error)
 }
 
 type AuthenticationControllerImpl struct {
@@ -92,18 +93,18 @@ func (a AuthenticationControllerImpl) LogoutUser(accessToken string) error {
 }
 
 // GetUserIno
-func (a AuthenticationControllerImpl) GetUserInfo(accessToken string) error {
+func (a AuthenticationControllerImpl) GetUserInfo(accessToken string) (*cognitoidentityprovider.GetUserOutput, error) {
 	input := &cognitoidentityprovider.GetUserInput{
 		AccessToken: aws.String(accessToken),
 	}
 
-	_, err := cognitoClient.GetUser(input)
+	userInfo, err := cognitoClient.GetUser(input)
 	if err != nil {
-		return err
+		return nil, err
 	}
 
 	logrus.WithField("accessToken", accessToken).Info("User authenticated successfully")
-	return nil
+	return userInfo, nil
 }
 
 func (a AuthenticationControllerImpl) RegisterUser(signUpRequest dto.SignUpRequest) error {
