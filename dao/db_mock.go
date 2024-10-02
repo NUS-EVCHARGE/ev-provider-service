@@ -12,6 +12,11 @@ type mockDbImpl struct {
 	chargerList      []dto.Charger
 }
 
+// GetVoucher implements Database.
+func (m *mockDbImpl) GetVoucher(voucherId int) (dto.Vouchers, error) {
+	panic("unimplemented")
+}
+
 // SetVouchersToBeExpired implements Database.
 func (m *mockDbImpl) SetVouchersToBeExpired(currentTime int64) error {
 	panic("unimplemented")
