@@ -148,6 +148,11 @@ func registerHandler() {
 		protectedV1.PATCH("/coin_policy", handler.UpdateCoinPolicy)
 		protectedV1.GET("/coin_policy", handler.GetCoinPolicy)
 
+		// data analytics
+		// // data visualisation
+		visual := protectedV1.Group("/visual")
+		visual.GET("/heatmap", handler.ChangerLocationHeatmapHandler)
+
 	}
 }
 
