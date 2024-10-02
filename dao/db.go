@@ -36,6 +36,7 @@ type Database interface {
 	UpdateCoinPolicy(coinPolicy dto.CoinPolicy) (dto.CoinPolicy, error)
 	GetCoinPolicy(providerId int) (dto.CoinPolicy, error)
 	CreateVouchers(voucher dto.Vouchers) (dto.Vouchers, error)
+	GetVoucher(voucherId int) (dto.Vouchers, error)
 	GetAllVouchers(providerId int) ([]dto.Vouchers, error)
 	UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error)
 	SetVouchersToBeExpired(currentTime int64) error

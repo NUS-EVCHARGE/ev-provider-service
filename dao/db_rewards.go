@@ -29,12 +29,18 @@ func (db *dbImpl) GetAllVouchers(providerId int) ([]dto.Vouchers, error) {
 	return voucherList, result.Error
 }
 
+func (db *dbImpl) GetVoucher(voucherId int) (dto.Vouchers, error) {
+	var voucher dto.Vouchers
+	result := db.DbController.Where("id = ?", voucherId).Find(&voucher)
+	return voucher, result.Error
+}
+
 func (db *dbImpl) UpdateVoucher(voucher dto.Vouchers) (dto.Vouchers, error) {
 	result := db.DbController.Updates(&voucher)
 	return voucher, result.Error
 }
 
 func (db *dbImpl) SetVouchersToBeExpired(currentTime int64) error {
-	result := db.DbController.Where("expiry_date <= ?", currentTime).Table("voucher_tab").Update("status", 0)
+	result := db.DbController.Where("end_date <= ?", currentTime).Table("voucher_tab").Update("status", 0)
 	return result.Error
 }

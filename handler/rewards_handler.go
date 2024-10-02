@@ -3,6 +3,7 @@ package handler
 import (
 	"fmt"
 	"net/http"
+	"strconv"
 
 	controller "github.com/NUS-EVCHARGE/ev-provider-service/controller/rewards"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dto"
@@ -69,6 +70,24 @@ func UpdateVoucher(c *gin.Context) {
 func GetVoucher(c *gin.Context) {
 	providerObj, _ := c.Get("provider")
 	providerId := int(providerObj.(dto.Provider).ID)
+	voucherId := c.Query("id")
+
+	if voucherId != "" {
+		voucherIdInt, err := strconv.Atoi(voucherId)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("Failed to convert to integer: %v", err)))
+			return
+		}
+
+		voucher, err := controller.RewardsControllerObj.GetVouchers(voucherIdInt)
+
+		if err != nil {
+			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("Failed to get voucher: %v", err)))
+			return
+		}
+		c.JSON(http.StatusOK, voucher)
+		return
+	}
 	voucherList, err := controller.RewardsControllerObj.GetAllVouchers(providerId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))

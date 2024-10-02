@@ -15,6 +15,7 @@ type RewardsController interface {
 	CreateVoucher(voucher dto.Vouchers) error
 	UpdateVoucher(voucher dto.Vouchers) error
 	GetAllVouchers(providerId int) ([]dto.Vouchers, error)
+	GetVouchers(voucherId int) (dto.Vouchers, error)
 	ExpireVouchers()
 }
 
@@ -42,25 +43,32 @@ func (r *RewardsControllerImpl) GetCoinPolicy(providerId int) (dto.CoinPolicy, e
 }
 
 func (r *RewardsControllerImpl) CreateVoucher(voucher dto.Vouchers) error {
-	t, err := time.Parse(time.RFC3339, voucher.ExpiryDate)
+	startDateObj, err := time.Parse(time.RFC3339, voucher.StartDate)
 	if err != nil {
 		return err
 	}
-	voucher.ExpiryDateInUnix = t.UnixNano()
+	endDateObj, err := time.Parse(time.RFC3339, voucher.EndDate)
+	if err != nil {
+		return err
+	}
+	voucher.StartDateInUnix = startDateObj.UnixNano()
+	voucher.EndDateInUnix = endDateObj.UnixNano()
 	voucher.Status = true
 	_, err = dao.Db.CreateVouchers(voucher)
 	return err
 }
 
 func (r *RewardsControllerImpl) UpdateVoucher(voucher dto.Vouchers) error {
-	t, err := time.Parse(time.RFC3339, voucher.ExpiryDate)
+	startDateObj, err := time.Parse(time.RFC3339, voucher.StartDate)
 	if err != nil {
 		return err
 	}
-	voucher.ExpiryDateInUnix = t.UnixNano()
-	if time.Now().UnixNano() < voucher.ExpiryDateInUnix {
-		voucher.Status = true
+	endDateObj, err := time.Parse(time.RFC3339, voucher.EndDate)
+	if err != nil {
+		return err
 	}
+	voucher.StartDateInUnix = startDateObj.UnixNano()
+	voucher.EndDateInUnix = endDateObj.UnixNano()
 	_, err = dao.Db.UpdateVoucher(voucher)
 	return err
 }
@@ -71,9 +79,22 @@ func (r *RewardsControllerImpl) GetAllVouchers(providerId int) ([]dto.Vouchers, 
 		return nil, err
 	}
 	for index, v := range voucherList {
-		voucherList[index].ExpiryDate = time.Unix(0, v.ExpiryDateInUnix).Format("2006-01-02 15:04")
+		voucherList[index].Key = index
+		voucherList[index].StartDate = time.Unix(0, v.StartDateInUnix).Format("2006-01-02 15:04:00")
+		voucherList[index].EndDate = time.Unix(0, v.EndDateInUnix).Format("2006-01-02 15:04:00")
 	}
 	return voucherList, nil
+}
+
+func (r *RewardsControllerImpl) GetVouchers(voucherId int) (dto.Vouchers, error) {
+	voucher, err := dao.Db.GetVoucher(voucherId)
+	if err != nil {
+		return dto.Vouchers{}, err
+	}
+
+	voucher.StartDate = time.Unix(0, voucher.StartDateInUnix).Format("2006-01-02 15:04:00")
+	voucher.EndDate = time.Unix(0, voucher.EndDateInUnix).Format("2006-01-02 15:04:00")
+	return voucher, nil
 }
 
 // this is a goroutine that sets voucher to be expired
