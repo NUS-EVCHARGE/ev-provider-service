@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	defaultUrl = "https://jsx85ddz0a.execute-api.ap-southeast-1.amazonaws.com/evcharger-gateway/audit/api/v1/audit"
+	defaultUrl = "https://jsx85ddz0a.execute-api.ap-southeast-1.amazonaws.com/evcharger-gateway/audit"
 )
 
 func PushAuditEvent(c *gin.Context) {
@@ -24,7 +24,7 @@ func PushAuditEvent(c *gin.Context) {
 		"Description": description,
 	}, helper.WithBearerToken(accessToken))
 	var resp map[string]interface{}
-	helper.HttpResponseDefaultParser(res, resp)
-	logrus.WithField("res", res).WithField("err", err).Info("audit_service_status")
+	helper.HttpResponseDefaultParser(res, &resp)
+	logrus.WithField("raw_res", res).WithField("parsed resp", resp).WithField("err", err).Info("audit_service_status")
 	return
 }
