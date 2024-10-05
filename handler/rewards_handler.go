@@ -24,7 +24,7 @@ func UpdateCoinPolicy(c *gin.Context) {
 		return
 	}
 	c.Set("action", "update_coin_policy")
-	c.Set("description", fmt.Sprintf("create req: %v", req))
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 
@@ -54,7 +54,7 @@ func CreateVoucher(c *gin.Context) {
 		return
 	}
 	c.Set("action", "create_voucher")
-	c.Set("description", fmt.Sprintf("create req: %v", req))
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 
@@ -72,7 +72,7 @@ func UpdateVoucher(c *gin.Context) {
 		return
 	}
 	c.Set("action", "update_voucher")
-	c.Set("description", fmt.Sprintf("create req: %v", req))
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 

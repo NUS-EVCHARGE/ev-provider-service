@@ -42,7 +42,7 @@ func UpdateLicenseByCompanyHandler(c *gin.Context) {
 		return
 	}
 	c.Set("action", "update_license")
-	c.Set("description", fmt.Sprintf("create req: %v", licenseObj))
+	c.Set("description", licenseObj)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }

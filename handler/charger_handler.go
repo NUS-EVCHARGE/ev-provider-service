@@ -98,7 +98,7 @@ func CreateChargerHandler(c *gin.Context) {
 		return
 	}
 	c.Set("action", "create_charger")
-	c.Set("description", fmt.Sprintf("create req: %v", chargerObj))
+	c.Set("description", chargerObj)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }
@@ -167,7 +167,7 @@ func UpdateChargerHandler(c *gin.Context) {
 		return
 	}
 	c.Set("action", "update_charger")
-	c.Set("description", fmt.Sprintf("create req: %v", chargerRequest))
+	c.Set("description", chargerRequest)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }
