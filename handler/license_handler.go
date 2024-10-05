@@ -32,13 +32,17 @@ func UpdateLicenseByCompanyHandler(c *gin.Context) {
 	companyName := c.Query("company_name")
 	if companyName == "" {
 		c.JSON(http.StatusBadRequest, CreateResponse("company_name undefined"))
+		c.Abort()
 		return
 	}
 	c.BindJSON(&licenseObj)
 	if err := license.LicenseControllerObj.UpdateLicense(licenseObj, companyName); err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
+	c.Set("action", "update_license")
+	c.Set("description", licenseObj)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }

@@ -65,7 +65,7 @@ func main() {
 	controller.NewRewardController()
 
 	// put all goroutines here
-	go controller.RewardsControllerObj.ExpireVouchers()
+	// go controller.RewardsControllerObj.ExpireVouchers()
 
 	InitHttpServer(configObj.HttpAddress)
 }
@@ -124,28 +124,28 @@ func registerHandler() {
 		protectedV1.DELETE("/provider/:provider_id", handler.DeleteProviderHandler)
 
 		// charger handler
-		protectedV1.POST("/charger", handler.CreateChargerHandler)
+		protectedV1.POST("/charger", handler.CreateChargerHandler, handler.PushAuditEvent)
 		protectedV1.GET("/charger", handler.GetAllChargerDetailsHandler)
-		protectedV1.PATCH("/charger", handler.UpdateChargerHandler)
+		protectedV1.PATCH("/charger", handler.UpdateChargerHandler, handler.PushAuditEvent)
 
 		// charger point handler
-		protectedV1.POST("/chargerpoint", handler.CreateChargerPointHandler)
-		protectedV1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler)
+		// protectedV1.POST("/chargerpoint", handler.CreateChargerPointHandler, handler.AuthMiddlewareHandler)
+		// protectedV1.PATCH("/chargerpoint", handler.UpdateChargerPointHandler, handler.AuthMiddlewareHandler)
 
 		// authentication handler
 		protectedV1.POST("/logout", handler.LogoutUserHandler)
 
 		// license handler
-		protectedV1.PATCH("/license", handler.UpdateLicenseByCompanyHandler)
+		protectedV1.PATCH("/license", handler.UpdateLicenseByCompanyHandler, handler.PushAuditEvent)
 		protectedV1.GET("/license", handler.GetLicenseByCompanyHandler)
 
 		// rewards handler
 		// // voucher handler
-		protectedV1.POST("/voucher", handler.CreateVoucher)
+		protectedV1.POST("/voucher", handler.CreateVoucher, handler.PushAuditEvent)
 		protectedV1.GET("/voucher", handler.GetVoucher)
-		protectedV1.PATCH("/voucher", handler.UpdateVoucher)
+		protectedV1.PATCH("/voucher", handler.UpdateVoucher, handler.PushAuditEvent)
 		// // coin handler
-		protectedV1.PATCH("/coin_policy", handler.UpdateCoinPolicy)
+		protectedV1.PATCH("/coin_policy", handler.UpdateCoinPolicy, handler.PushAuditEvent)
 		protectedV1.GET("/coin_policy", handler.GetCoinPolicy)
 
 		// data analytics

@@ -40,6 +40,7 @@ func CreateChargerHandler(c *gin.Context) {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
 	// get company id
@@ -50,6 +51,7 @@ func CreateChargerHandler(c *gin.Context) {
 	if err != nil {
 		logrus.WithField("err", err).Error("get charger point error")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
 
@@ -59,6 +61,7 @@ func CreateChargerHandler(c *gin.Context) {
 		if err != nil {
 			logrus.WithField("err", err).Error("get charger point details error from google")
 			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+			c.Abort()
 			return
 		}
 
@@ -72,6 +75,7 @@ func CreateChargerHandler(c *gin.Context) {
 		if err != nil {
 			logrus.WithField("err", err).Error("error creating charger point")
 			c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+			c.Abort()
 			return
 		}
 	}
@@ -93,7 +97,8 @@ func CreateChargerHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
-
+	c.Set("action", "create_charger")
+	c.Set("description", chargerObj)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }
@@ -150,6 +155,7 @@ func UpdateChargerHandler(c *gin.Context) {
 		// todo: change to common library
 		logrus.WithField("err", err).Error("error params")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
 	err = charger.ChargerControllerObj.UpdateCharger(chargerRequest)
@@ -157,8 +163,11 @@ func UpdateChargerHandler(c *gin.Context) {
 		// todo: change to common library
 		logrus.WithField("Charger", chargerRequest).WithField("err", err).Error("error update Charger")
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
+	c.Set("action", "update_charger")
+	c.Set("description", chargerRequest)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 	return
 }

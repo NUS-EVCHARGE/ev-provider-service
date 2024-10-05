@@ -20,8 +20,11 @@ func UpdateCoinPolicy(c *gin.Context) {
 
 	if err := controller.RewardsControllerObj.UpdateCoinPolicy(req); err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
+	c.Set("action", "update_coin_policy")
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 
@@ -47,8 +50,11 @@ func CreateVoucher(c *gin.Context) {
 
 	if err := controller.RewardsControllerObj.CreateVoucher(req); err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
+	c.Set("action", "create_voucher")
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 
@@ -62,8 +68,11 @@ func UpdateVoucher(c *gin.Context) {
 
 	if err := controller.RewardsControllerObj.UpdateVoucher(req); err != nil {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		c.Abort()
 		return
 	}
+	c.Set("action", "update_voucher")
+	c.Set("description", req)
 	c.JSON(http.StatusOK, CreateResponse("success"))
 }
 
