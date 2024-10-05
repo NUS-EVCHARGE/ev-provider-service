@@ -153,6 +153,9 @@ func registerHandler() {
 		visual := protectedV1.Group("/visual")
 		visual.GET("/heatmap", handler.ChangerLocationHeatmapHandler)
 
+		// payment
+		r.POST("/payment-sheet", handler.HandlerPaymentSheet)
+
 	}
 }
 
