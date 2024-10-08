@@ -2,6 +2,7 @@ package handler
 
 import (
 	"fmt"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/encryption"
 	"net/http"
 
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
@@ -28,6 +29,46 @@ func LoginHandler(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
 		return
 	}
+
+	resp, err := authentication.AuthenticationControllerObj.LoginUser(credentials)
+	if err != nil {
+		logrus.WithField("err", err).Error("error authenticating user")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+	// get compnay name
+	providerDetails, err := provider.ProviderControllerObj.GetProvider(credentials.Email)
+	if err != nil {
+		logrus.WithField("err", err).Error("error getting provider")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+	resp.CompanyName = providerDetails.CompanyName
+
+	c.JSON(http.StatusOK, resp)
+	return
+}
+
+func SignInHandler(c *gin.Context) {
+	var (
+		credentials dto.Credentials
+	)
+
+	err := c.BindJSON(&credentials)
+	if err != nil {
+		logrus.WithField("err", err).Error("error params")
+		c.JSON(http.StatusBadRequest, CreateResponse(fmt.Sprintf("%v", err)))
+		return
+	}
+
+	decryptPassword, err := encryption.EncryptionControllerObj.DecryptPassword(credentials.Password)
+	if err != nil {
+		logrus.WithField("err", err).Error("error decrypting password")
+		c.JSON(http.StatusBadRequest, CreateResponse("Invalid Password"))
+		return
+	}
+
+	credentials.Password = decryptPassword
 
 	resp, err := authentication.AuthenticationControllerObj.LoginUser(credentials)
 	if err != nil {

@@ -4,17 +4,17 @@ import (
 	"flag"
 	"time"
 
-	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
-	"github.com/NUS-EVCHARGE/ev-provider-service/controller/license"
-	controller "github.com/NUS-EVCHARGE/ev-provider-service/controller/rewards"
-	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
-
 	"github.com/NUS-EVCHARGE/ev-provider-service/config"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/authentication"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/charger"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/encryption"
+	"github.com/NUS-EVCHARGE/ev-provider-service/controller/license"
 	"github.com/NUS-EVCHARGE/ev-provider-service/controller/provider"
+	controller "github.com/NUS-EVCHARGE/ev-provider-service/controller/rewards"
 	"github.com/NUS-EVCHARGE/ev-provider-service/dao"
 	_ "github.com/NUS-EVCHARGE/ev-provider-service/docs"
 	"github.com/NUS-EVCHARGE/ev-provider-service/handler"
+	"github.com/NUS-EVCHARGE/ev-provider-service/helper"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/sirupsen/logrus"
@@ -63,6 +63,7 @@ func main() {
 	license.NewLicenseController()
 	authentication.NewAuthenticationController()
 	controller.NewRewardController()
+	encryption.NewEncryptionController()
 
 	// put all goroutines here
 	// go controller.RewardsControllerObj.ExpireVouchers()
@@ -104,12 +105,14 @@ func registerHandler() {
 	v1 := r.Group("/api/v1")
 	{
 		v1.POST("/login", handler.LoginHandler)
+		v1.POST("/signin", handler.SignInHandler)
 		v1.POST("/signup", handler.SignUpHandler)
 		v1.POST("/confirm", handler.ConfirmUserHandler)
 		v1.POST("/resend", handler.ResendChallengeCodeHandler)
 		v1.GET("/ws", handler.WsChargerEndpoint)
 		v1.GET("/charger/chargerstatus", handler.GetChargerEndpointStatus)
 		v1.POST("/charger/chargerstatus", handler.SetChargerEndpointStatus)
+		v1.GET("/prelogin", handler.GetPreLoginHandler)
 	}
 
 	protectedV1 := r.Group("/api/v1")
