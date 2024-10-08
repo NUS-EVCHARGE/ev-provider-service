@@ -146,7 +146,13 @@ func DeleteProviderHandler(c *gin.Context) {
 	return
 }
 
-func CreateResponse(message string) map[string]interface{} {
+func CreateResponse(message string, data ...interface{}) map[string]interface{} {
+	if len(data) > 0 {
+		return map[string]interface{}{
+			"message": message,
+			"data":    data[0],
+		}
+	}
 	return map[string]interface{}{
 		"message": message,
 	}
